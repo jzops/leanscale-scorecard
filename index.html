@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeanScale Team Scorecard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #301934;
+      --primary-light: #4a2a52;
+      --accent: #E8FFCF;
+      --bg: #FFFBFF;
+      --card-bg: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border: #e5e5e5;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+    
+    /* Navigation */
+    .nav {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .nav-logo img {
+      height: 32px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .nav-link {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: all 0.2s;
+    }
+    
+    .nav-link:hover { background: #f5f5f5; color: var(--text-primary); }
+    .nav-link.active { background: var(--primary); color: white; }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      padding: 2rem 0 2.5rem;
+    }
+    
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    
+    .page-header p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; }
+    
+    /* Team Grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .person-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .person-name {
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+    
+    .person-role {
+      background: var(--accent);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .person-scores {
+      padding: 1.25rem;
+    }
+    
+    .score-section {
+      margin-bottom: 1.25rem;
+    }
+    
+    .score-section:last-child { margin-bottom: 0; }
+    
+    .score-section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+    }
+    
+    .score-label {
+      font-size: 0.875rem;
+      color: var(--text-primary);
+    }
+    
+    .score-input {
+      width: 52px;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    
+    .score-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(48, 25, 52, 0.1);
+    }
+    
+    .averages {
+      background: #f9f9f9;
+      padding: 1rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .avg-item { text-align: center; }
+    
+    .avg-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    
+    .avg-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .avg-value.empty { color: #ccc; }
+    
+    /* Summary Table */
+    .summary-table {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    
+    .summary-table th {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .summary-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table tr:nth-child(even) { background: #fafafa; }
+    .summary-table tr:hover { background: #f5f5f5; }
+    
+    /* Rubrics */
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 1.25rem;
+    }
+    
+    .rubric-category {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    
+    .rubric-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .rubric-table th {
+      background: #f5f5f5;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    
+    .rubric-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    
+    .rubric-table tr:last-child td { border-bottom: none; }
+    
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: var(--primary);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: inherit;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    
+    .save-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      right: 1.5rem;
+      background: var(--accent);
+      color: var(--primary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* CTA Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      margin-top: 2rem;
+    }
+    
+    .cta-banner h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cta-banner p {
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cta-banner .btn {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    
+    .cta-banner .btn:hover {
+      background: white;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: 1fr; }
+      .rubric-grid { grid-template-columns: 1fr; }
+      .nav { padding: 1rem; }
+      .container { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span>📊</span> Team Scorecard
+    </a>
+    <div class="nav-links">
+      <button class="nav-link active" data-tab="team">Team Scores</button>
+      <button class="nav-link" data-tab="summary">Summary</button>
+      <button class="nav-link" data-tab="technical">Technical Rubrics</button>
+      <button class="nav-link" data-tab="soft">Soft Skills Rubrics</button>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1>🎯 LeanScale Team</h1>
+      <p>Performance & Skills Assessment Dashboard</p>
+    </div>
+    
+    <div id="team" class="section active">
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-value" id="totalTeam">16</div>
+          <div class="stat-label">Team Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgTech">—</div>
+          <div class="stat-label">Avg Technical</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgSoft">—</div>
+          <div class="stat-label">Avg Soft Skills</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgOverall">—</div>
+          <div class="stat-label">Overall Average</div>
+        </div>
+      </div>
+      
+      <div class="team-grid" id="teamGrid"></div>
+      
+      <div class="cta-banner">
+        <h3>📈 Track Progress Over Time</h3>
+        <p>Save your scores to keep track of team development and growth.</p>
+        <button class="btn" onclick="saveData()">💾 Save All Changes</button>
+      </div>
+    </div>
+    
+    <div id="summary" class="section">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Technical Avg</th>
+            <th>Soft Skills Avg</th>
+            <th>Overall</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+    
+    <div id="technical" class="section">
+      <div class="rubric-grid" id="technicalRubrics"></div>
+    </div>
+    
+    <div id="soft" class="section">
+      <div class="rubric-grid" id="softRubrics"></div>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary save-btn" onclick="saveData()">💾 Save Changes</button>
+  <div class="toast" id="toast">✓ Changes saved!</div>
+
+<script>
+const TECHNICAL_SKILLS = [
+  { key: 'planning_pipeline', label: 'Planning (Pipeline)' },
+  { key: 'planning_revenue', label: 'Planning (Revenue)' },
+  { key: 'process_pipeline', label: 'Process (Pipeline)' },
+  { key: 'process_revenue', label: 'Process (Revenue)' },
+  { key: 'systems_pipeline', label: 'Systems (Pipeline)' },
+  { key: 'systems_revenue', label: 'Systems (Revenue)' },
+  { key: 'reporting_pipeline', label: 'Reporting (Pipeline)' },
+  { key: 'reporting_revenue', label: 'Reporting (Revenue)' },
+  { key: 'enablement_pipeline', label: 'Enablement (Pipeline)' },
+  { key: 'enablement_revenue', label: 'Enablement (Revenue)' },
+  { key: 'people_pipeline', label: 'People (Pipeline)' },
+  { key: 'people_revenue', label: 'People (Revenue)' }
+];
+
+const SOFT_SKILLS = [
+  { key: 'communication', label: 'Communication' },
+  { key: 'organization', label: 'Organization' },
+  { key: 'diligence', label: 'Diligence' },
+  { key: 'leadership', label: 'Leadership' },
+  { key: 'value_alignment', label: 'Value Alignment' }
+];
+
+const TECHNICAL_RUBRICS = {
+  'Planning (Pipeline)': [
+    { score: 1, desc: 'Learning basic planning concepts; needs guidance on growth models and budgeting' },
+    { score: 2, desc: 'Can follow established planning frameworks; assists with quota/budget creation' },
+    { score: 3, desc: 'Independently builds channel quotas, marketing budgets, and ICP analysis' },
+    { score: 4, desc: 'Designs multi-channel pipeline planning strategies; leads planning sessions' },
+    { score: 5, desc: 'Creates innovative planning methodologies; benchmarks against industry best practices' }
+  ],
+  'Planning (Revenue)': [
+    { score: 1, desc: 'Learning capacity planning basics; needs guidance on territory design' },
+    { score: 2, desc: 'Can follow established capacity models; assists with territory assignments' },
+    { score: 3, desc: 'Independently builds capacity plans, territory designs, and sales quotas' },
+    { score: 4, desc: 'Designs complex territory strategies; optimizes quota distribution' },
+    { score: 5, desc: 'Creates scalable planning frameworks; advises on M&A territory integration' }
+  ],
+  'Process (Pipeline)': [
+    { score: 1, desc: 'Learning lead lifecycle concepts; needs guidance on routing rules' },
+    { score: 2, desc: 'Can configure basic lead routing; understands lifecycle stages' },
+    { score: 3, desc: 'Designs lead lifecycle, scoring models, and attribution methodology' },
+    { score: 4, desc: 'Optimizes conversion across lifecycle; implements ABM processes' },
+    { score: 5, desc: 'Innovates lifecycle automation; creates industry-leading attribution models' }
+  ],
+  'Process (Revenue)': [
+    { score: 1, desc: 'Learning sales lifecycle basics; needs guidance on handoff processes' },
+    { score: 2, desc: 'Can configure basic sales stages; understands opportunity management' },
+    { score: 3, desc: 'Designs sales lifecycle, handoffs, and comp plan structures' },
+    { score: 4, desc: 'Optimizes sales methodology; implements complex CPQ workflows' },
+    { score: 5, desc: 'Creates scalable sales processes; designs enterprise deal desk operations' }
+  ],
+  'Systems (Pipeline)': [
+    { score: 1, desc: 'Learning MAP basics; needs guidance on system configuration' },
+    { score: 2, desc: 'Can perform basic MAP tasks; understands CRM-MAP integration' },
+    { score: 3, desc: 'Independently manages MAP, ABM platforms, and email automation' },
+    { score: 4, desc: 'Architects complex integrations; optimizes tech stack performance' },
+    { score: 5, desc: 'Designs enterprise-scale martech architecture; evaluates emerging tools' }
+  ],
+  'Systems (Revenue)': [
+    { score: 1, desc: 'Learning CRM basics; needs guidance on system administration' },
+    { score: 2, desc: 'Can perform basic CRM tasks; understands sales automation' },
+    { score: 3, desc: 'Independently manages CRM, CPQ, and revenue intelligence tools' },
+    { score: 4, desc: 'Architects complex sales tech stack; implements conversation intelligence' },
+    { score: 5, desc: 'Designs enterprise-scale revenue architecture; leads system migrations' }
+  ],
+  'Reporting (Pipeline)': [
+    { score: 1, desc: 'Learning basic reporting; needs guidance on metrics' },
+    { score: 2, desc: 'Can build simple reports; understands marketing KPIs' },
+    { score: 3, desc: 'Builds daily/weekly/monthly marketing reports independently' },
+    { score: 4, desc: 'Designs executive dashboards; creates predictive pipeline models' },
+    { score: 5, desc: 'Innovates reporting methodology; builds board-level marketing analytics' }
+  ],
+  'Reporting (Revenue)': [
+    { score: 1, desc: 'Learning basic reporting; needs guidance on sales metrics' },
+    { score: 2, desc: 'Can build simple reports; understands revenue KPIs' },
+    { score: 3, desc: 'Builds daily/weekly/monthly revenue reports independently' },
+    { score: 4, desc: 'Designs executive dashboards; creates forecasting models' },
+    { score: 5, desc: 'Innovates reporting methodology; builds board-level revenue analytics' }
+  ],
+  'Enablement (Pipeline)': [
+    { score: 1, desc: 'Learning enablement basics; needs guidance on content management' },
+    { score: 2, desc: 'Can update existing enablement materials; understands training needs' },
+    { score: 3, desc: 'Creates marketing enablement content; manages enablement platforms' },
+    { score: 4, desc: 'Designs comprehensive enablement programs; leads training sessions' },
+    { score: 5, desc: 'Innovates enablement methodology; builds scalable training frameworks' }
+  ],
+  'Enablement (Revenue)': [
+    { score: 1, desc: 'Learning enablement basics; needs guidance on sales training' },
+    { score: 2, desc: 'Can update existing materials; understands rep onboarding needs' },
+    { score: 3, desc: 'Creates sales enablement content; manages playbooks and QBRs' },
+    { score: 4, desc: 'Designs comprehensive sales training; leads methodology rollouts' },
+    { score: 5, desc: 'Innovates enablement methodology; builds enterprise onboarding programs' }
+  ],
+  'People (Pipeline)': [
+    { score: 1, desc: 'Learning team dynamics; needs guidance on cross-functional work' },
+    { score: 2, desc: 'Collaborates effectively with marketing/partner teams' },
+    { score: 3, desc: 'Manages stakeholder relationships; coordinates cross-team initiatives' },
+    { score: 4, desc: 'Leads cross-functional projects; mentors junior team members' },
+    { score: 5, desc: 'Builds high-performing teams; advises on org design and hiring' }
+  ],
+  'People (Revenue)': [
+    { score: 1, desc: 'Learning team dynamics; needs guidance on sales/CS collaboration' },
+    { score: 2, desc: 'Collaborates effectively with sales/CS teams' },
+    { score: 3, desc: 'Manages stakeholder relationships; coordinates revenue initiatives' },
+    { score: 4, desc: 'Leads cross-functional projects; mentors junior team members' },
+    { score: 5, desc: 'Builds high-performing teams; advises on revenue org structure' }
+  ]
+};
+
+const SOFT_RUBRICS = {
+  'Communication': [
+    { score: 1, desc: 'Struggles with clear communication; messages often need clarification' },
+    { score: 2, desc: 'Communicates adequately; occasional misunderstandings with stakeholders' },
+    { score: 3, desc: 'Clear, professional communication; adapts style to audience effectively' },
+    { score: 4, desc: 'Excellent communicator; influences decisions and aligns stakeholders' },
+    { score: 5, desc: 'Exceptional communication skills; trusted advisor to executives' }
+  ],
+  'Organization': [
+    { score: 1, desc: 'Struggles with task management; frequently misses deadlines' },
+    { score: 2, desc: 'Manages routine tasks; needs help prioritizing competing demands' },
+    { score: 3, desc: 'Well-organized; manages multiple projects with minimal oversight' },
+    { score: 4, desc: 'Highly organized; creates systems others can follow' },
+    { score: 5, desc: 'Exceptional organization; optimizes team workflows and processes' }
+  ],
+  'Diligence': [
+    { score: 1, desc: 'Inconsistent attention to detail; errors require frequent correction' },
+    { score: 2, desc: 'Generally careful; occasionally misses important details' },
+    { score: 3, desc: 'Thorough and reliable; consistently delivers quality work' },
+    { score: 4, desc: 'Exceptionally diligent; catches issues others miss' },
+    { score: 5, desc: 'Sets the standard for quality; establishes QA processes for team' }
+  ],
+  'Leadership': [
+    { score: 1, desc: 'Focuses on individual tasks; hesitant to take initiative' },
+    { score: 2, desc: 'Shows leadership potential; takes ownership when asked' },
+    { score: 3, desc: 'Natural leader; proactively drives initiatives and guides peers' },
+    { score: 4, desc: 'Strong leader; develops others and leads complex initiatives' },
+    { score: 5, desc: 'Exceptional leader; shapes culture and strategy across organization' }
+  ],
+  'Value Alignment': [
+    { score: 1, desc: 'Limited understanding of company values; actions sometimes conflict' },
+    { score: 2, desc: 'Understands values; occasionally needs reminders on alignment' },
+    { score: 3, desc: 'Embodies company values; decisions consistently reflect principles' },
+    { score: 4, desc: 'Champion of values; reinforces culture and coaches others' },
+    { score: 5, desc: 'Culture carrier; defines and evolves organizational values' }
+  ]
+};
+
+let teamData = [
+  { name: 'David', role: 'Engineer', scores: {} },
+  { name: 'John', role: 'Architect', scores: {} },
+  { name: 'Derek', role: 'Architect', scores: {} },
+  { name: 'Christopher', role: 'Engineer', scores: {} },
+  { name: 'Brian', role: 'Architect', scores: {} },
+  { name: 'Kavean', role: 'Engineer', scores: {} },
+  { name: 'Isabelle', role: 'Architect', scores: {} },
+  { name: 'Eduardo', role: 'Engineer', scores: {} },
+  { name: 'Raphael', role: 'Engineer', scores: {} },
+  { name: 'Rodolfo', role: 'Engineer', scores: {} },
+  { name: 'Amanda', role: 'Architect', scores: {} },
+  { name: 'Solange', role: 'Engineer', scores: {} },
+  { name: 'Diego', role: 'Engineer', scores: {} },
+  { name: 'Ambrstack', role: 'Engineer', scores: {} },
+  { name: 'Sarmad', role: 'Engineer', scores: {} },
+  { name: 'Amanda M', role: 'Architect', scores: {} }
+];
+
+const saved = localStorage.getItem('leanscale_scorecard');
+if (saved) teamData = JSON.parse(saved);
+
+function calculateAvg(person, skills) {
+  const vals = skills.map(s => person.scores[s.key]).filter(v => v && v > 0);
+  if (vals.length === 0) return null;
+  return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+}
+
+function updateGlobalStats() {
+  const allTech = [], allSoft = [], allOverall = [];
+  teamData.forEach(p => {
+    const t = calculateAvg(p, TECHNICAL_SKILLS);
+    const s = calculateAvg(p, SOFT_SKILLS);
+    const o = calculateAvg(p, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+    if (t) allTech.push(parseFloat(t));
+    if (s) allSoft.push(parseFloat(s));
+    if (o) allOverall.push(parseFloat(o));
+  });
+  
+  document.getElementById('avgTech').textContent = allTech.length ? (allTech.reduce((a,b)=>a+b,0)/allTech.length).toFixed(1) : '—';
+  document.getElementById('avgSoft').textContent = allSoft.length ? (allSoft.reduce((a,b)=>a+b,0)/allSoft.length).toFixed(1) : '—';
+  document.getElementById('avgOverall').textContent = allOverall.length ? (allOverall.reduce((a,b)=>a+b,0)/allOverall.length).toFixed(1) : '—';
+}
+
+function renderTeamGrid() {
+  const grid = document.getElementById('teamGrid');
+  grid.innerHTML = teamData.map((person, idx) => `
+    <div class="card">
+      <div class="person-header">
+        <span class="person-name">${person.name}</span>
+        <span class="person-role">${person.role}</span>
+      </div>
+      <div class="person-scores">
+        <div class="score-section">
+          <div class="score-section-title">Technical Skills</div>
+          ${TECHNICAL_SKILLS.map(s => `
+            <div class="score-row">
+              <span class="score-label">${s.label}</span>
+              <input type="number" class="score-input" min="1" max="5" 
+                value="${person.scores[s.key] || ''}" 
+                data-person="${idx}" data-skill="${s.key}"
+                onchange="updateScore(this)">
+            </div>
+          `).join('')}
+        </div>
+        <div class="score-section">
+          <div class="score-section-title">Soft Skills</div>
+          ${SOFT_SKILLS.map(s => `
+            <div class="score-row">
+              <span class="score-label">${s.label}</span>
+              <input type="number" class="score-input" min="1" max="5" 
+                value="${person.scores[s.key] || ''}" 
+                data-person="${idx}" data-skill="${s.key}"
+                onchange="updateScore(this)">
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <div class="averages">
+        <div class="avg-item">
+          <div class="avg-label">Technical</div>
+          <div class="avg-value ${calculateAvg(person, TECHNICAL_SKILLS) ? '' : 'empty'}" id="tech-avg-${idx}">
+            ${calculateAvg(person, TECHNICAL_SKILLS) || '—'}
+          </div>
+        </div>
+        <div class="avg-item">
+          <div class="avg-label">Soft Skills</div>
+          <div class="avg-value ${calculateAvg(person, SOFT_SKILLS) ? '' : 'empty'}" id="soft-avg-${idx}">
+            ${calculateAvg(person, SOFT_SKILLS) || '—'}
+          </div>
+        </div>
+        <div class="avg-item">
+          <div class="avg-label">Overall</div>
+          <div class="avg-value ${calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]) ? '' : 'empty'}" id="overall-avg-${idx}">
+            ${calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]) || '—'}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  updateGlobalStats();
+}
+
+function renderSummary() {
+  const body = document.getElementById('summaryBody');
+  body.innerHTML = teamData.map(person => {
+    const tech = calculateAvg(person, TECHNICAL_SKILLS);
+    const soft = calculateAvg(person, SOFT_SKILLS);
+    const overall = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+    return `
+      <tr>
+        <td><strong>${person.name}</strong></td>
+        <td>${person.role}</td>
+        <td>${tech || '—'}</td>
+        <td>${soft || '—'}</td>
+        <td><strong>${overall || '—'}</strong></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderRubrics() {
+  const techDiv = document.getElementById('technicalRubrics');
+  techDiv.innerHTML = Object.entries(TECHNICAL_RUBRICS).map(([cat, items]) => `
+    <div class="rubric-category">
+      <div class="rubric-header">${cat}</div>
+      <table class="rubric-table">
+        <thead><tr><th style="width:60px">Score</th><th>Criteria</th></tr></thead>
+        <tbody>
+          ${items.map(i => `
+            <tr>
+              <td><span class="score-badge">${i.score}</span></td>
+              <td>${i.desc}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `).join('');
+  
+  const softDiv = document.getElementById('softRubrics');
+  softDiv.innerHTML = Object.entries(SOFT_RUBRICS).map(([cat, items]) => `
+    <div class="rubric-category">
+      <div class="rubric-header">${cat}</div>
+      <table class="rubric-table">
+        <thead><tr><th style="width:60px">Score</th><th>Criteria</th></tr></thead>
+        <tbody>
+          ${items.map(i => `
+            <tr>
+              <td><span class="score-badge">${i.score}</span></td>
+              <td>${i.desc}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `).join('');
+}
+
+function updateScore(input) {
+  const idx = parseInt(input.dataset.person);
+  const skill = input.dataset.skill;
+  const val = parseInt(input.value) || null;
+  
+  if (val && (val < 1 || val > 5)) { input.value = ''; return; }
+  
+  teamData[idx].scores[skill] = val;
+  
+  const techAvg = calculateAvg(teamData[idx], TECHNICAL_SKILLS);
+  const softAvg = calculateAvg(teamData[idx], SOFT_SKILLS);
+  const overallAvg = calculateAvg(teamData[idx], [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  
+  document.getElementById(`tech-avg-${idx}`).textContent = techAvg || '—';
+  document.getElementById(`soft-avg-${idx}`).textContent = softAvg || '—';
+  document.getElementById(`overall-avg-${idx}`).textContent = overallAvg || '—';
+  
+  updateGlobalStats();
+}
+
+function saveData() {
+  localStorage.setItem('leanscale_scorecard', JSON.stringify(teamData));
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+  renderSummary();
+}
+
+document.querySelectorAll('.nav-link').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+renderTeamGrid();
+renderSummary();
+renderRubrics();
+</script>
+</body>
+</html>
