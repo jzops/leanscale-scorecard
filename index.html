@@ -509,6 +509,32 @@
       padding: 2rem;
     }
 
+    .context-legend {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .context-legend-title {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .context-legend-item {
+      color: var(--text-primary);
+      background: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+    }
+
     .skills-section {
       margin-bottom: 2rem;
     }
@@ -580,6 +606,55 @@
       font-size: 0.8rem;
       color: var(--text-secondary);
       line-height: 1.4;
+    }
+
+    .skill-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .context-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .context-icon {
+      font-size: 0.9rem;
+    }
+
+    .context-input {
+      width: 40px;
+      height: 26px;
+      border: 1px solid #bae6fd;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      background: white;
+    }
+
+    .context-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    }
+
+    .context-input::-webkit-inner-spin-button,
+    .context-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .context-input[type=number] {
+      -moz-appearance: textfield;
     }
 
     .skill-score-input {
@@ -1190,6 +1265,52 @@
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .interview-context-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 1px solid #fbbf24;
+      border-radius: 8px;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+      cursor: help;
+    }
+
+    .interview-context-input {
+      width: 36px;
+      height: 24px;
+      border: 1px solid #fbbf24;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: inherit;
+      background: white;
+    }
+
+    .interview-context-input:focus {
+      outline: none;
+      border-color: var(--candidate);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    .interview-context-input::placeholder {
+      color: #d4a300;
+    }
+
+    .interview-context-input::-webkit-inner-spin-button,
+    .interview-context-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .interview-context-input[type=number] {
+      -moz-appearance: textfield;
     }
 
     .interview-skill-label {
@@ -1910,22 +2031,29 @@ const INTERVIEW_QUESTIONS = {
 };
 
 let teamData = [
-  { name: 'David', role: 'Engineer', scores: {} },
-  { name: 'John', role: 'Architect', scores: {} },
-  { name: 'Derek', role: 'Architect', scores: {} },
-  { name: 'Christopher', role: 'Engineer', scores: {} },
-  { name: 'Brian', role: 'Architect', scores: {} },
-  { name: 'Kavean', role: 'Engineer', scores: {} },
-  { name: 'Isabelle', role: 'Architect', scores: {} },
-  { name: 'Eduardo', role: 'Engineer', scores: {} },
-  { name: 'Raphael', role: 'Engineer', scores: {} },
-  { name: 'Rodolfo', role: 'Engineer', scores: {} },
-  { name: 'Amanda', role: 'Architect', scores: {} },
-  { name: 'Solange', role: 'Engineer', scores: {} },
-  { name: 'Diego', role: 'Engineer', scores: {} },
-  { name: 'Ambrstack', role: 'Engineer', scores: {} },
-  { name: 'Sarmad', role: 'Engineer', scores: {} }
+  { name: 'David', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'John', role: 'Architect', scores: {}, contextData: {} },
+  { name: 'Derek', role: 'Architect', scores: {}, contextData: {} },
+  { name: 'Christopher', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Brian', role: 'Architect', scores: {}, contextData: {} },
+  { name: 'Kavean', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Isabelle', role: 'Architect', scores: {}, contextData: {} },
+  { name: 'Eduardo', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Raphael', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Rodolfo', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Amanda', role: 'Architect', scores: {}, contextData: {} },
+  { name: 'Solange', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Diego', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Ambrstack', role: 'Engineer', scores: {}, contextData: {} },
+  { name: 'Sarmad', role: 'Engineer', scores: {}, contextData: {} }
 ];
+
+// Context labels for different skill types
+const CONTEXT_LABELS = {
+  technical: { label: 'Projects', icon: '📁' },
+  soft: { label: 'Customer At-Bats', icon: '🤝' },
+  architect: { label: 'Engagements', icon: '🏢' }
+};
 
 let candidatesData = [];
 let currentPersonIdx = null;
@@ -1935,10 +2063,22 @@ let previousBadges = {};
 
 // Load saved data
 const savedTeam = localStorage.getItem('leanscale_scorecard_v2');
-if (savedTeam) teamData = JSON.parse(savedTeam);
+if (savedTeam) {
+  teamData = JSON.parse(savedTeam);
+  // Migrate: ensure all team members have contextData
+  teamData.forEach(p => {
+    if (!p.contextData) p.contextData = {};
+  });
+}
 
 const savedCandidates = localStorage.getItem('leanscale_candidates');
-if (savedCandidates) candidatesData = JSON.parse(savedCandidates);
+if (savedCandidates) {
+  candidatesData = JSON.parse(savedCandidates);
+  // Migrate: ensure all candidates have contextData
+  candidatesData.forEach(c => {
+    if (!c.contextData) c.contextData = {};
+  });
+}
 
 // Initialize previous badges state
 teamData.forEach((p, idx) => {
@@ -2238,6 +2378,12 @@ function openProfile(idx) {
   ` : '';
 
   document.getElementById('modalBody').innerHTML = `
+    <div class="context-legend">
+      <span class="context-legend-title">Context Guide:</span>
+      <span class="context-legend-item">📁 Projects completed</span>
+      <span class="context-legend-item">🤝 Customer at-bats</span>
+      ${person.role === 'Architect' ? '<span class="context-legend-item">🏢 Engagements managed</span>' : ''}
+    </div>
     <div class="skills-section">
       <div class="skills-header">
         <span class="skills-title">⚡ Technical Skills</span>
@@ -2261,6 +2407,8 @@ function openProfile(idx) {
 
 function renderSkillRow(person, skill, isTechnical, isCandidate = false, isArchitect = false) {
   const score = person.scores[skill.key] || null;
+  const contextData = person.contextData || {};
+  const contextValue = contextData[skill.key] || 0;
   let rubrics;
   if (isArchitect) {
     rubrics = ARCHITECT_RUBRICS[skill.key];
@@ -2271,8 +2419,10 @@ function renderSkillRow(person, skill, isTechnical, isCandidate = false, isArchi
   }
   const onclickFn = isCandidate ? `toggleCandidateSkillRubric('${skill.key}')` : `toggleSkillRubric('${skill.key}')`;
   const scoreFn = isCandidate ? 'setCandidateScore' : 'setScore';
+  const contextFn = isCandidate ? 'setCandidateContext' : 'setContext';
 
   const skillType = isArchitect ? 'architect' : (isTechnical ? 'technical' : 'soft');
+  const contextLabel = CONTEXT_LABELS[skillType];
 
   return `
     <div class="skill-row" id="${isCandidate ? 'candidate-' : ''}skill-${skill.key}">
@@ -2281,14 +2431,23 @@ function renderSkillRow(person, skill, isTechnical, isCandidate = false, isArchi
           <div class="skill-name">${skill.label}</div>
           <div class="skill-current-desc">${getCurrentLevelDesc(skill.key, score, isTechnical, isArchitect)}</div>
         </div>
-        <div class="skill-score-input">
-          ${[1,2,3,4,5].map(n => `
-            <button class="score-btn ${score === n ? 'active' : ''}"
-                    onclick="event.stopPropagation(); ${scoreFn}('${skill.key}', ${n}, '${skillType}')">
-              ${n}
-            </button>
-          `).join('')}
-          <span class="expand-icon">▼</span>
+        <div class="skill-controls">
+          <div class="context-badge" onclick="event.stopPropagation();" title="${contextLabel.label}">
+            <span class="context-icon">${contextLabel.icon}</span>
+            <input type="number" min="0" max="999" class="context-input"
+                   value="${contextValue}"
+                   onchange="${contextFn}('${skill.key}', this.value)"
+                   onclick="event.stopPropagation();">
+          </div>
+          <div class="skill-score-input">
+            ${[1,2,3,4,5].map(n => `
+              <button class="score-btn ${score === n ? 'active' : ''}"
+                      onclick="event.stopPropagation(); ${scoreFn}('${skill.key}', ${n}, '${skillType}')">
+                ${n}
+              </button>
+            `).join('')}
+            <span class="expand-icon">▼</span>
+          </div>
         </div>
       </div>
       <div class="skill-rubric">
@@ -2351,6 +2510,24 @@ function setCandidateScore(skillKey, score, isTechnical) {
   saveCandidates();
   openCandidateModal(currentCandidateIdx);
   renderCandidates();
+}
+
+function setContext(skillKey, value) {
+  if (currentPersonIdx === null) return;
+  const person = teamData[currentPersonIdx];
+  if (!person.contextData) person.contextData = {};
+  person.contextData[skillKey] = parseInt(value) || 0;
+  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
+  // Don't re-render the whole modal to preserve cursor position
+}
+
+function setCandidateContext(skillKey, value) {
+  if (currentCandidateIdx === null) return;
+  const candidate = candidatesData[currentCandidateIdx];
+  if (!candidate.contextData) candidate.contextData = {};
+  candidate.contextData[skillKey] = parseInt(value) || 0;
+  saveCandidates();
+  // Don't re-render to preserve cursor position
 }
 
 function getTierRank(tier) {
@@ -2546,6 +2723,8 @@ function renderCandidateModalBody(candidate) {
 function renderInterviewQuestion(candidate, skill, isTechnical, isArchitect = false) {
   const score = candidate.scores[skill.key] || null;
   const notes = candidate.notes[skill.key] || '';
+  const contextData = candidate.contextData || {};
+  const contextValue = contextData[skill.key] || '';
   const question = INTERVIEW_QUESTIONS[skill.key];
   let rubrics;
   if (isArchitect) {
@@ -2556,6 +2735,7 @@ function renderInterviewQuestion(candidate, skill, isTechnical, isArchitect = fa
     rubrics = SOFT_RUBRICS[skill.key];
   }
   const skillType = isArchitect ? 'architect' : (isTechnical ? 'technical' : 'soft');
+  const contextLabel = CONTEXT_LABELS[skillType];
 
   return `
     <div class="interview-question-card">
@@ -2563,6 +2743,13 @@ function renderInterviewQuestion(candidate, skill, isTechnical, isArchitect = fa
         <div>
           <div class="interview-skill-label">${skill.label}</div>
           <div class="interview-question">"${question.primary}"</div>
+        </div>
+        <div class="interview-context-badge" title="${contextLabel.label} (optional - from prior experience)">
+          <span class="context-icon">${contextLabel.icon}</span>
+          <input type="number" min="0" max="999" class="interview-context-input"
+                 value="${contextValue}"
+                 placeholder="—"
+                 onchange="setCandidateContext('${skill.key}', this.value)">
         </div>
       </div>
       <div class="interview-followup">
