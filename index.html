@@ -515,6 +515,14 @@
 
     .skills-section:last-child { margin-bottom: 0; }
 
+    .skills-section.architect-section .skills-header {
+      border-bottom-color: #9333ea;
+    }
+
+    .skills-section.architect-section .skills-avg {
+      color: #9333ea;
+    }
+
     .skills-header {
       display: flex;
       justify-content: space-between;
@@ -1622,6 +1630,14 @@ const SOFT_SKILLS = [
   { key: 'value_alignment', label: 'Value Alignment' }
 ];
 
+// Architect-only skills
+const ARCHITECT_SKILLS = [
+  { key: 'responsiveness', label: 'Responsiveness' },
+  { key: 'roadmap_planning', label: 'Roadmap Planning' },
+  { key: 'proactivity', label: 'Proactivity' },
+  { key: 'strategic_value', label: 'Strategic Value' }
+];
+
 const TECHNICAL_RUBRICS = {
   'planning_pipeline': [
     { score: 1, desc: 'Learning basic planning concepts; needs guidance on growth models and budgeting' },
@@ -1747,6 +1763,38 @@ const SOFT_RUBRICS = {
   ]
 };
 
+// Architect-specific skill rubrics
+const ARCHITECT_RUBRICS = {
+  'responsiveness': [
+    { score: 1, desc: 'Slow to respond to client/team needs; often requires follow-ups; communication gaps cause delays' },
+    { score: 2, desc: 'Responds within reasonable timeframes; occasionally needs reminders on urgent items' },
+    { score: 3, desc: 'Consistently responsive; acknowledges requests promptly; sets clear expectations on timelines' },
+    { score: 4, desc: 'Highly responsive; anticipates needs before asked; keeps stakeholders proactively informed' },
+    { score: 5, desc: 'Exemplary responsiveness; creates systems for rapid response; clients cite as key differentiator' }
+  ],
+  'roadmap_planning': [
+    { score: 1, desc: 'Struggles to plan beyond immediate tasks; roadmaps unclear or frequently missed' },
+    { score: 2, desc: 'Can create basic project plans; needs help sequencing dependencies and milestones' },
+    { score: 3, desc: 'Builds clear 30/60/90 day roadmaps; manages dependencies; adjusts plans based on learnings' },
+    { score: 4, desc: 'Creates strategic multi-quarter roadmaps; balances quick wins with long-term value; strong stakeholder buy-in' },
+    { score: 5, desc: 'Transforms ambiguous situations into clear roadmaps; roadmaps become client reference points; teaches methodology' }
+  ],
+  'proactivity': [
+    { score: 1, desc: 'Waits to be told what to do; rarely identifies issues or opportunities independently' },
+    { score: 2, desc: 'Occasionally flags issues; needs prompting to think ahead; reactive more than proactive' },
+    { score: 3, desc: 'Regularly identifies risks and opportunities; brings solutions not just problems; stays ahead of blockers' },
+    { score: 4, desc: 'Anticipates client needs before they arise; proactively improves processes; drives initiatives without being asked' },
+    { score: 5, desc: 'Sets the standard for proactive thinking; transforms client relationships through anticipation; mentors others on proactivity' }
+  ],
+  'strategic_value': [
+    { score: 1, desc: 'Focuses only on tactical execution; struggles to connect work to business outcomes' },
+    { score: 2, desc: 'Understands strategic context when explained; can articulate value with guidance' },
+    { score: 3, desc: 'Connects tactical work to strategic goals; quantifies impact; communicates value to stakeholders' },
+    { score: 4, desc: 'Shapes client strategy; identifies high-impact opportunities; becomes trusted strategic advisor' },
+    { score: 5, desc: 'Drives transformational value; influences C-level decisions; work becomes case study material' }
+  ]
+};
+
 // Interview Questions - Startup-focused, quick and punchy
 const INTERVIEW_QUESTIONS = {
   // Technical Skills - Pipeline
@@ -1836,6 +1884,28 @@ const INTERVIEW_QUESTIONS = {
     primary: "What's the most important thing you look for in a company's culture?",
     followup: "Tell me about a time your values conflicted with what was being asked of you. What did you do?",
     lookFor: "Look for: self-awareness, integrity, client-first mindset"
+  },
+
+  // Architect-Only Skills
+  'responsiveness': {
+    primary: "It's Friday 4pm and a client pings with an 'urgent' request. Walk me through your decision process.",
+    followup: "How do you balance responsiveness with protecting your own time and avoiding burnout?",
+    lookFor: "Look for: prioritization instincts, client empathy, boundary-setting, communication about timelines"
+  },
+  'roadmap_planning': {
+    primary: "You're 2 weeks into a new client engagement and they ask 'what's our 90-day plan?' How do you build it?",
+    followup: "The roadmap gets blown up by a new priority mid-quarter. What's your approach?",
+    lookFor: "Look for: structured planning process, stakeholder alignment, flexibility, milestone thinking"
+  },
+  'proactivity': {
+    primary: "Tell me about a time you identified a problem before anyone asked you to look at it. What happened?",
+    followup: "How do you stay ahead of issues without becoming annoying or overstepping?",
+    lookFor: "Look for: pattern recognition, initiative, relationship awareness, solutions-oriented thinking"
+  },
+  'strategic_value': {
+    primary: "Give me an example where you turned a tactical task into strategic impact for a client.",
+    followup: "How do you communicate value to a skeptical executive who thinks ops is just 'keeping the lights on'?",
+    lookFor: "Look for: business acumen, ROI thinking, executive communication, elevating the conversation"
   }
 };
 
@@ -1918,15 +1988,23 @@ function getXPPercentage(avg) {
   return (parseFloat(avg) / 5) * 100;
 }
 
-function getCurrentLevelDesc(skillKey, score, isTechnical = true) {
-  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skillKey] : SOFT_RUBRICS[skillKey];
+function getCurrentLevelDesc(skillKey, score, isTechnical = true, isArchitect = false) {
+  let rubrics;
+  if (isArchitect) {
+    rubrics = ARCHITECT_RUBRICS[skillKey];
+  } else if (isTechnical) {
+    rubrics = TECHNICAL_RUBRICS[skillKey];
+  } else {
+    rubrics = SOFT_RUBRICS[skillKey];
+  }
   if (!rubrics || !score) return 'No score yet - click to evaluate';
   const item = rubrics.find(r => r.score === score);
   return item ? item.desc : 'No score yet - click to evaluate';
 }
 
 function getCandidateStatus(candidate) {
-  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length;
+  const isArchitect = candidate.role === 'Architect';
+  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length + (isArchitect ? ARCHITECT_SKILLS.length : 0);
   const scoredSkills = Object.values(candidate.scores || {}).filter(v => v && v > 0).length;
   if (scoredSkills === 0) return 'new';
   if (scoredSkills < totalSkills) return 'in-progress';
@@ -2125,9 +2203,14 @@ function openProfile(idx) {
   const person = teamData[idx];
   const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
   const softAvg = calculateAvg(person, SOFT_SKILLS);
-  const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const archAvg = person.role === 'Architect' ? calculateAvg(person, ARCHITECT_SKILLS) : null;
+  const allSkills = person.role === 'Architect'
+    ? [...TECHNICAL_SKILLS, ...SOFT_SKILLS, ...ARCHITECT_SKILLS]
+    : [...TECHNICAL_SKILLS, ...SOFT_SKILLS];
+  const overallAvg = calculateAvg(person, allSkills);
   const techBadge = getBadgeTier(techAvg);
   const softBadge = getBadgeTier(softAvg);
+  const archBadge = person.role === 'Architect' ? getBadgeTier(archAvg) : null;
   const overallBadge = getBadgeTier(overallAvg);
 
   document.getElementById('modalHeader').innerHTML = `
@@ -2138,10 +2221,21 @@ function openProfile(idx) {
       <div class="modal-badges">
         ${techBadge ? `<span class="badge ${techBadge} earned">${getBadgeIcon(techBadge)} Technical ${getBadgeLabel(techBadge)}</span>` : ''}
         ${softBadge ? `<span class="badge ${softBadge} earned">${getBadgeIcon(softBadge)} Soft Skills ${getBadgeLabel(softBadge)}</span>` : ''}
+        ${archBadge ? `<span class="badge ${archBadge} earned">${getBadgeIcon(archBadge)} Architect ${getBadgeLabel(archBadge)}</span>` : ''}
         ${overallBadge ? `<span class="badge ${overallBadge} earned">${getBadgeIcon(overallBadge)} Overall ${getBadgeLabel(overallBadge)}</span>` : ''}
       </div>
     </div>
   `;
+
+  const architectSection = person.role === 'Architect' ? `
+    <div class="skills-section architect-section">
+      <div class="skills-header">
+        <span class="skills-title">🏛️ Architect Skills</span>
+        <span class="skills-avg">${archAvg || '—'} / 5.0</span>
+      </div>
+      ${ARCHITECT_SKILLS.map(skill => renderSkillRow(person, skill, false, false, true)).join('')}
+    </div>
+  ` : '';
 
   document.getElementById('modalBody').innerHTML = `
     <div class="skills-section">
@@ -2158,29 +2252,39 @@ function openProfile(idx) {
       </div>
       ${SOFT_SKILLS.map(skill => renderSkillRow(person, skill, false, false)).join('')}
     </div>
+    ${architectSection}
   `;
 
   document.getElementById('profileModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
-function renderSkillRow(person, skill, isTechnical, isCandidate = false) {
+function renderSkillRow(person, skill, isTechnical, isCandidate = false, isArchitect = false) {
   const score = person.scores[skill.key] || null;
-  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skill.key] : SOFT_RUBRICS[skill.key];
+  let rubrics;
+  if (isArchitect) {
+    rubrics = ARCHITECT_RUBRICS[skill.key];
+  } else if (isTechnical) {
+    rubrics = TECHNICAL_RUBRICS[skill.key];
+  } else {
+    rubrics = SOFT_RUBRICS[skill.key];
+  }
   const onclickFn = isCandidate ? `toggleCandidateSkillRubric('${skill.key}')` : `toggleSkillRubric('${skill.key}')`;
   const scoreFn = isCandidate ? 'setCandidateScore' : 'setScore';
+
+  const skillType = isArchitect ? 'architect' : (isTechnical ? 'technical' : 'soft');
 
   return `
     <div class="skill-row" id="${isCandidate ? 'candidate-' : ''}skill-${skill.key}">
       <div class="skill-main" onclick="${onclickFn}">
         <div class="skill-info">
           <div class="skill-name">${skill.label}</div>
-          <div class="skill-current-desc">${getCurrentLevelDesc(skill.key, score, isTechnical)}</div>
+          <div class="skill-current-desc">${getCurrentLevelDesc(skill.key, score, isTechnical, isArchitect)}</div>
         </div>
         <div class="skill-score-input">
           ${[1,2,3,4,5].map(n => `
             <button class="score-btn ${score === n ? 'active' : ''}"
-                    onclick="event.stopPropagation(); ${scoreFn}('${skill.key}', ${n}, ${isTechnical})">
+                    onclick="event.stopPropagation(); ${scoreFn}('${skill.key}', ${n}, '${skillType}')">
               ${n}
             </button>
           `).join('')}
@@ -2212,21 +2316,26 @@ function toggleCandidateSkillRubric(skillKey) {
   document.getElementById(`candidate-skill-${skillKey}`).classList.toggle('expanded');
 }
 
-function setScore(skillKey, score, isTechnical) {
+function setScore(skillKey, score, skillType) {
   if (currentPersonIdx === null) return;
   const person = teamData[currentPersonIdx];
   const oldTechBadge = getBadgeTier(calculateAvg(person, TECHNICAL_SKILLS));
   const oldSoftBadge = getBadgeTier(calculateAvg(person, SOFT_SKILLS));
+  const oldArchBadge = person.role === 'Architect' ? getBadgeTier(calculateAvg(person, ARCHITECT_SKILLS)) : null;
 
   person.scores[skillKey] = person.scores[skillKey] === score ? null : score;
+  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
 
   const newTechBadge = getBadgeTier(calculateAvg(person, TECHNICAL_SKILLS));
   const newSoftBadge = getBadgeTier(calculateAvg(person, SOFT_SKILLS));
+  const newArchBadge = person.role === 'Architect' ? getBadgeTier(calculateAvg(person, ARCHITECT_SKILLS)) : null;
 
-  if (isTechnical && newTechBadge && newTechBadge !== oldTechBadge && getTierRank(newTechBadge) > getTierRank(oldTechBadge)) {
+  if (skillType === 'technical' && newTechBadge && newTechBadge !== oldTechBadge && getTierRank(newTechBadge) > getTierRank(oldTechBadge)) {
     showAchievement(newTechBadge, 'Technical');
-  } else if (!isTechnical && newSoftBadge && newSoftBadge !== oldSoftBadge && getTierRank(newSoftBadge) > getTierRank(oldSoftBadge)) {
+  } else if (skillType === 'soft' && newSoftBadge && newSoftBadge !== oldSoftBadge && getTierRank(newSoftBadge) > getTierRank(oldSoftBadge)) {
     showAchievement(newSoftBadge, 'Soft Skills');
+  } else if (skillType === 'architect' && newArchBadge && newArchBadge !== oldArchBadge && getTierRank(newArchBadge) > getTierRank(oldArchBadge)) {
+    showAchievement(newArchBadge, 'Architect');
   }
 
   openProfile(currentPersonIdx);
@@ -2333,24 +2442,50 @@ function openCandidateModal(idx) {
 }
 
 function renderCandidateModalBody(candidate) {
+  const isArchitect = candidate.role === 'Architect';
   const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
   const softAvg = calculateAvg(candidate, SOFT_SKILLS);
-  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length;
+  const archAvg = isArchitect ? calculateAvg(candidate, ARCHITECT_SKILLS) : null;
+  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length + (isArchitect ? ARCHITECT_SKILLS.length : 0);
   const scoredSkills = Object.values(candidate.scores || {}).filter(v => v && v > 0).length;
 
   // Filter skills based on section
   let techSkillsToShow = TECHNICAL_SKILLS;
   let softSkillsToShow = SOFT_SKILLS;
+  let archSkillsToShow = isArchitect ? ARCHITECT_SKILLS : [];
 
   if (currentInterviewSection === 'pipeline') {
     techSkillsToShow = TECHNICAL_SKILLS.filter(s => s.category === 'Pipeline Ops');
     softSkillsToShow = [];
+    archSkillsToShow = [];
   } else if (currentInterviewSection === 'revenue') {
     techSkillsToShow = TECHNICAL_SKILLS.filter(s => s.category === 'Revenue Ops');
     softSkillsToShow = [];
+    archSkillsToShow = [];
   } else if (currentInterviewSection === 'soft') {
     techSkillsToShow = [];
+    archSkillsToShow = [];
+  } else if (currentInterviewSection === 'architect') {
+    techSkillsToShow = [];
+    softSkillsToShow = [];
+    archSkillsToShow = isArchitect ? ARCHITECT_SKILLS : [];
   }
+
+  const architectTabHtml = isArchitect ? `
+    <button class="interview-section-tab ${currentInterviewSection === 'architect' ? 'active' : ''}" onclick="setInterviewSection('architect')">
+      Architect <span class="tab-count">${ARCHITECT_SKILLS.length}</span>
+    </button>
+  ` : '';
+
+  const architectSectionHtml = archSkillsToShow.length > 0 ? `
+    <div class="skills-section architect-section">
+      <div class="skills-header">
+        <span class="skills-title">🏛️ Architect Skills</span>
+        <span class="skills-avg">${archAvg || '—'} / 5.0</span>
+      </div>
+      ${archSkillsToShow.map(skill => renderInterviewQuestion(candidate, skill, false, true)).join('')}
+    </div>
+  ` : '';
 
   document.getElementById('candidateModalBody').innerHTML = `
     <div class="interview-progress">
@@ -2376,6 +2511,7 @@ function renderCandidateModalBody(candidate) {
       <button class="interview-section-tab ${currentInterviewSection === 'soft' ? 'active' : ''}" onclick="setInterviewSection('soft')">
         Soft Skills <span class="tab-count">5</span>
       </button>
+      ${architectTabHtml}
     </div>
 
     ${techSkillsToShow.length > 0 ? `
@@ -2398,6 +2534,8 @@ function renderCandidateModalBody(candidate) {
       </div>
     ` : ''}
 
+    ${architectSectionHtml}
+
     <div class="interview-nav">
       <button class="btn btn-danger btn-sm" onclick="deleteCandidate(${currentCandidateIdx})">🗑️ Delete Candidate</button>
       <button class="btn btn-primary" onclick="hireCandidate(${currentCandidateIdx})">✅ Move to Team</button>
@@ -2405,11 +2543,19 @@ function renderCandidateModalBody(candidate) {
   `;
 }
 
-function renderInterviewQuestion(candidate, skill, isTechnical) {
+function renderInterviewQuestion(candidate, skill, isTechnical, isArchitect = false) {
   const score = candidate.scores[skill.key] || null;
   const notes = candidate.notes[skill.key] || '';
   const question = INTERVIEW_QUESTIONS[skill.key];
-  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skill.key] : SOFT_RUBRICS[skill.key];
+  let rubrics;
+  if (isArchitect) {
+    rubrics = ARCHITECT_RUBRICS[skill.key];
+  } else if (isTechnical) {
+    rubrics = TECHNICAL_RUBRICS[skill.key];
+  } else {
+    rubrics = SOFT_RUBRICS[skill.key];
+  }
+  const skillType = isArchitect ? 'architect' : (isTechnical ? 'technical' : 'soft');
 
   return `
     <div class="interview-question-card">
@@ -2426,7 +2572,7 @@ function renderInterviewQuestion(candidate, skill, isTechnical) {
       <div class="interview-scoring">
         ${[1,2,3,4,5].map(n => `
           <button class="interview-score-btn ${score === n ? 'selected' : ''}"
-                  onclick="setCandidateScoreFromInterview('${skill.key}', ${n}, ${isTechnical})">
+                  onclick="setCandidateScoreFromInterview('${skill.key}', ${n}, '${skillType}')">
             <span class="score-num">${n}</span>
             <span class="score-label">${rubrics[n-1].desc.split(';')[0].substring(0, 20)}...</span>
           </button>
