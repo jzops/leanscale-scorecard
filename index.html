@@ -17,17 +17,34 @@
       --border: #e5e5e5;
       --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
       --shadow-lg: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+
+      /* Badge colors */
+      --bronze: #CD7F32;
+      --bronze-bg: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+      --silver: #C0C0C0;
+      --silver-bg: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
+      --gold: #FFD700;
+      --gold-bg: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      --platinum: #E5E4E2;
+      --platinum-bg: linear-gradient(135deg, #E5E4E2 0%, #A0B2C6 100%);
+      --diamond: #B9F2FF;
+      --diamond-bg: linear-gradient(135deg, #B9F2FF 0%, #7DF9FF 100%);
+
+      /* XP bar colors */
+      --xp-bg: #e0e0e0;
+      --xp-fill: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
     }
-    
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text-primary);
       line-height: 1.6;
     }
-    
+
     /* Navigation */
     .nav {
       background: var(--card-bg);
@@ -40,7 +57,7 @@
       top: 0;
       z-index: 100;
     }
-    
+
     .nav-logo {
       display: flex;
       align-items: center;
@@ -50,16 +67,12 @@
       color: var(--primary);
       text-decoration: none;
     }
-    
-    .nav-logo img {
-      height: 32px;
-    }
-    
+
     .nav-links {
       display: flex;
       gap: 0.5rem;
     }
-    
+
     .nav-link {
       padding: 0.5rem 1rem;
       border-radius: 8px;
@@ -72,200 +85,581 @@
       background: none;
       transition: all 0.2s;
     }
-    
+
     .nav-link:hover { background: #f5f5f5; color: var(--text-primary); }
     .nav-link.active { background: var(--primary); color: white; }
-    
+
     /* Container */
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 2rem;
     }
-    
+
     /* Page Header */
     .page-header {
       text-align: center;
       padding: 2rem 0 2.5rem;
     }
-    
+
     .page-header h1 {
       font-size: 2.5rem;
       font-weight: 800;
       margin-bottom: 0.5rem;
       color: var(--text-primary);
     }
-    
+
     .page-header p {
       font-size: 1.125rem;
       color: var(--text-secondary);
       max-width: 600px;
       margin: 0 auto;
     }
-    
-    /* Stats Grid */
-    .stats-grid {
+
+    /* Leaderboard Stats */
+    .leaderboard-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
       margin-bottom: 2rem;
     }
-    
+
     .stat-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 1.5rem;
       text-align: center;
       box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
     .stat-value {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 800;
       color: var(--primary);
     }
-    
+
     .stat-label {
       font-size: 0.875rem;
       color: var(--text-secondary);
       font-weight: 500;
     }
-    
+
     /* Sections */
     .section { display: none; }
     .section.active { display: block; }
-    
-    /* Team Grid */
+
+    /* Team Grid - Character Cards */
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
     }
-    
-    .card {
+
+    /* Character Card */
+    .character-card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
+      border: 2px solid var(--border);
+      border-radius: 20px;
       overflow: hidden;
-      transition: all 0.2s;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
     }
-    
-    .card:hover {
-      box-shadow: var(--shadow-lg);
+
+    .character-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--primary);
     }
-    
-    .person-header {
+
+    .character-card.bronze { border-color: var(--bronze); }
+    .character-card.silver { border-color: var(--silver); }
+    .character-card.gold { border-color: var(--gold); }
+    .character-card.platinum { border-color: #A0B2C6; }
+    .character-card.diamond { border-color: #7DF9FF; }
+
+    .card-header {
       background: var(--primary);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      border: 3px solid white;
+      flex-shrink: 0;
+    }
+
+    .character-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .character-name {
+      font-size: 1.25rem;
+      font-weight: 700;
       color: white;
-      padding: 1rem 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .character-role {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .level-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(255,255,255,0.2);
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    /* XP Bars Section */
+    .xp-section {
+      padding: 1.25rem;
+    }
+
+    .xp-group {
+      margin-bottom: 1rem;
+    }
+
+    .xp-group:last-child { margin-bottom: 0; }
+
+    .xp-group-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 0.5rem;
     }
-    
-    .person-name {
-      font-size: 1.125rem;
-      font-weight: 700;
-    }
-    
-    .person-role {
-      background: var(--accent);
-      color: var(--primary);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    
-    .person-scores {
-      padding: 1.25rem;
-    }
-    
-    .score-section {
-      margin-bottom: 1.25rem;
-    }
-    
-    .score-section:last-child { margin-bottom: 0; }
-    
-    .score-section-title {
+
+    .xp-group-title {
       font-size: 0.75rem;
       font-weight: 700;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
     }
-    
-    .score-row {
+
+    .xp-group-score {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .xp-bar-container {
+      height: 12px;
+      background: var(--xp-bg);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      background: var(--xp-fill);
+      border-radius: 6px;
+      transition: width 0.5s ease-out;
+      position: relative;
+    }
+
+    .xp-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Badges Section */
+    .badges-section {
+      padding: 0 1.25rem 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      opacity: 0.3;
+      transition: all 0.3s;
+    }
+
+    .badge.earned {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .badge-icon {
+      font-size: 0.9rem;
+    }
+
+    .badge.bronze { background: var(--bronze-bg); color: white; }
+    .badge.silver { background: var(--silver-bg); color: #333; }
+    .badge.gold { background: var(--gold-bg); color: #333; }
+    .badge.platinum { background: var(--platinum-bg); color: #333; }
+    .badge.diamond { background: var(--diamond-bg); color: #333; }
+
+    /* Card Footer Stats */
+    .card-footer {
+      background: #f9f9f9;
+      padding: 1rem 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.4rem 0;
-    }
-    
-    .score-label {
-      font-size: 0.875rem;
-      color: var(--text-primary);
-    }
-    
-    .score-input {
-      width: 52px;
-      padding: 0.4rem 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-family: inherit;
-      text-align: center;
-      transition: all 0.2s;
-    }
-    
-    .score-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(48, 25, 52, 0.1);
-    }
-    
-    .averages {
-      background: #f9f9f9;
-      padding: 1rem 1.25rem;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
       border-top: 1px solid var(--border);
     }
-    
-    .avg-item { text-align: center; }
-    
-    .avg-label {
-      font-size: 0.7rem;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+
+    .overall-score {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    
-    .avg-value {
+
+    .overall-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .overall-value {
       font-size: 1.5rem;
       font-weight: 800;
       color: var(--primary);
     }
-    
-    .avg-value.empty { color: #ccc; }
-    
+
+    .view-profile-btn {
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .view-profile-btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    /* Modal / Focus Mode */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 24px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.1);
+    }
+
+    .modal-header {
+      background: var(--primary);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .modal-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      border: 4px solid white;
+      flex-shrink: 0;
+    }
+
+    .modal-character-info h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .skills-section {
+      margin-bottom: 2rem;
+    }
+
+    .skills-section:last-child { margin-bottom: 0; }
+
+    .skills-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .skills-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .skills-avg {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .skill-row {
+      background: #f9f9f9;
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .skill-row:hover {
+      border-color: var(--primary);
+    }
+
+    .skill-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+    }
+
+    .skill-info {
+      flex: 1;
+    }
+
+    .skill-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .skill-current-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .skill-score-input {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .score-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .score-btn:hover {
+      border-color: var(--primary);
+      background: #f5f5f5;
+    }
+
+    .score-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .skill-rubric {
+      display: none;
+      padding: 0 1.25rem 1rem;
+      background: white;
+    }
+
+    .skill-row.expanded .skill-rubric {
+      display: block;
+    }
+
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .rubric-table th {
+      text-align: left;
+      padding: 0.5rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rubric-table td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .rubric-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rubric-score {
+      width: 40px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .rubric-table tr.current-level {
+      background: var(--accent);
+    }
+
+    .expand-icon {
+      color: var(--text-secondary);
+      transition: transform 0.2s;
+      font-size: 0.8rem;
+    }
+
+    .skill-row.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
     /* Summary Table */
     .summary-table {
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
       box-shadow: var(--shadow);
     }
-    
+
     .summary-table th {
       background: var(--primary);
       color: white;
@@ -274,83 +668,34 @@
       font-size: 0.875rem;
       font-weight: 600;
     }
-    
+
     .summary-table td {
       padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--border);
       font-size: 0.9rem;
     }
-    
+
     .summary-table tr:last-child td { border-bottom: none; }
     .summary-table tr:nth-child(even) { background: #fafafa; }
-    .summary-table tr:hover { background: #f5f5f5; }
-    
-    /* Rubrics */
-    .rubric-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-      gap: 1.25rem;
-    }
-    
-    .rubric-category {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    
-    .rubric-header {
-      background: var(--primary);
-      color: white;
-      padding: 1rem 1.25rem;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-    
-    .rubric-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    .rubric-table th {
-      background: #f5f5f5;
-      padding: 0.75rem 1rem;
-      text-align: left;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-    }
-    
-    .rubric-table td {
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.875rem;
-    }
-    
-    .rubric-table tr:last-child td { border-bottom: none; }
-    
-    .score-badge {
+    .summary-table tr:hover { background: #f5f5f5; cursor: pointer; }
+
+    .summary-badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      background: var(--accent);
-      color: var(--primary);
-      border-radius: 50%;
-      font-weight: 700;
-      font-size: 0.875rem;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
     }
-    
+
     /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 0.875rem;
       font-weight: 600;
       text-decoration: none;
@@ -359,24 +704,25 @@
       border: none;
       font-family: inherit;
     }
-    
+
     .btn-primary {
       background: var(--primary);
       color: white;
     }
-    
+
     .btn-primary:hover {
       background: var(--primary-light);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
-    
+
     .save-btn {
       position: fixed;
       bottom: 1.5rem;
       right: 1.5rem;
       box-shadow: var(--shadow-lg);
+      z-index: 50;
     }
-    
+
     .toast {
       position: fixed;
       bottom: 5rem;
@@ -384,81 +730,384 @@
       background: var(--accent);
       color: var(--primary);
       padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s;
+      z-index: 50;
     }
-    
+
     .toast.show {
       opacity: 1;
       transform: translateY(0);
     }
-    
-    /* CTA Banner */
-    .cta-banner {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      border-radius: 16px;
-      padding: 2rem;
-      text-align: center;
-      color: white;
-      margin-top: 2rem;
+
+    /* Legend */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
-    
-    .cta-banner h3 {
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Achievement Animation */
+    .achievement-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: var(--card-bg);
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      z-index: 2000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .achievement-popup.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .achievement-popup .badge-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .achievement-popup h3 {
       font-size: 1.5rem;
-      font-weight: 700;
+      color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
-    
-    .cta-banner p {
-      opacity: 0.9;
-      margin-bottom: 1.5rem;
+
+    .achievement-popup p {
+      color: var(--text-secondary);
     }
-    
-    .cta-banner .btn {
+
+    /* Role Comparison (Home) */
+    .role-comparison {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .role-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+
+    .role-header {
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: white;
+    }
+
+    .role-header.architects {
+      background: linear-gradient(135deg, #301934 0%, #5a3d5c 100%);
+    }
+
+    .role-header.engineers {
+      background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 100%);
+    }
+
+    .role-icon {
+      font-size: 3rem;
+      background: rgba(255,255,255,0.15);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .role-info {
+      flex: 1;
+    }
+
+    .role-info h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .role-info p {
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    .role-stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .role-stat {
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+    }
+
+    .role-stat-value {
+      display: block;
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    .role-stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      padding: 1.5rem;
+    }
+
+    /* Compact Character Card for Home */
+    .character-card-compact {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .character-card-compact:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .character-card-compact.bronze { border-color: var(--bronze); }
+    .character-card-compact.silver { border-color: var(--silver); }
+    .character-card-compact.gold { border-color: var(--gold); }
+    .character-card-compact.platinum { border-color: #A0B2C6; }
+
+    .compact-header {
+      background: var(--primary);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .compact-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
       background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+      border: 2px solid white;
+      flex-shrink: 0;
+    }
+
+    .compact-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .compact-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .compact-level {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .compact-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .compact-stats {
+      display: flex;
+      padding: 0.75rem 1rem;
+      gap: 0.5rem;
+    }
+
+    .compact-stat {
+      flex: 1;
+      text-align: center;
+      padding: 0.5rem;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .compact-stat-value {
+      font-size: 1.1rem;
+      font-weight: 800;
       color: var(--primary);
     }
-    
-    .cta-banner .btn:hover {
-      background: white;
+
+    .compact-stat-label {
+      font-size: 0.6rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
     }
-    
+
+    .compact-badges {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0 1rem 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .compact-badges .badge {
+      font-size: 0.65rem;
+      padding: 0.25rem 0.5rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .leaderboard-stats { grid-template-columns: repeat(2, 1fr); }
       .team-grid { grid-template-columns: 1fr; }
-      .rubric-grid { grid-template-columns: 1fr; }
-      .nav { padding: 1rem; }
+      .role-grid { grid-template-columns: 1fr; }
+      .nav { padding: 1rem; flex-direction: column; gap: 1rem; }
+      .nav-links { flex-wrap: wrap; justify-content: center; }
       .container { padding: 1rem; }
+      .modal-header { flex-direction: column; text-align: center; }
+      .legend { gap: 0.75rem; }
+      .role-header { flex-direction: column; text-align: center; }
+      .role-stats { flex-wrap: wrap; justify-content: center; }
     }
   </style>
 </head>
 <body>
   <nav class="nav">
     <a href="#" class="nav-logo">
-      <span>📊</span> Team Scorecard
+      <span>🎮</span> LeanScale Scorecard
     </a>
     <div class="nav-links">
-      <button class="nav-link active" data-tab="team">Team Scores</button>
-      <button class="nav-link" data-tab="summary">Summary</button>
-      <button class="nav-link" data-tab="technical">Technical Rubrics</button>
-      <button class="nav-link" data-tab="soft">Soft Skills Rubrics</button>
+      <button class="nav-link active" data-tab="home">Home</button>
+      <button class="nav-link" data-tab="team">Full Roster</button>
+      <button class="nav-link" data-tab="leaderboard">Leaderboard</button>
     </div>
   </nav>
-  
+
   <div class="container">
     <div class="page-header">
-      <h1>🎯 LeanScale Team</h1>
-      <p>Performance & Skills Assessment Dashboard</p>
+      <h1>🏆 Team Skills Arena</h1>
+      <p>Level up your team. Track progress. Earn badges.</p>
     </div>
-    
-    <div id="team" class="section active">
-      <div class="stats-grid" id="statsGrid">
+
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-badge badge bronze earned">🥉 Bronze</span>
+        <span>1.0 - 2.4</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-badge badge silver earned">🥈 Silver</span>
+        <span>2.5 - 3.4</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-badge badge gold earned">🥇 Gold</span>
+        <span>3.5 - 4.4</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-badge badge platinum earned">💎 Platinum</span>
+        <span>4.5 - 5.0</span>
+      </div>
+    </div>
+
+    <div id="home" class="section active">
+      <div class="role-comparison">
+        <div class="role-section">
+          <div class="role-header architects">
+            <div class="role-icon">🏛️</div>
+            <div class="role-info">
+              <h2>Architects</h2>
+              <p id="architectCount">0 members</p>
+            </div>
+            <div class="role-stats">
+              <div class="role-stat">
+                <span class="role-stat-value" id="architectTech">—</span>
+                <span class="role-stat-label">Technical</span>
+              </div>
+              <div class="role-stat">
+                <span class="role-stat-value" id="architectSoft">—</span>
+                <span class="role-stat-label">Soft Skills</span>
+              </div>
+              <div class="role-stat">
+                <span class="role-stat-value" id="architectOverall">—</span>
+                <span class="role-stat-label">Overall</span>
+              </div>
+            </div>
+          </div>
+          <div class="role-grid" id="architectGrid"></div>
+        </div>
+
+        <div class="role-section">
+          <div class="role-header engineers">
+            <div class="role-icon">⚙️</div>
+            <div class="role-info">
+              <h2>Engineers</h2>
+              <p id="engineerCount">0 members</p>
+            </div>
+            <div class="role-stats">
+              <div class="role-stat">
+                <span class="role-stat-value" id="engineerTech">—</span>
+                <span class="role-stat-label">Technical</span>
+              </div>
+              <div class="role-stat">
+                <span class="role-stat-value" id="engineerSoft">—</span>
+                <span class="role-stat-label">Soft Skills</span>
+              </div>
+              <div class="role-stat">
+                <span class="role-stat-value" id="engineerOverall">—</span>
+                <span class="role-stat-label">Overall</span>
+              </div>
+            </div>
+          </div>
+          <div class="role-grid" id="engineerGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="team" class="section">
+      <div class="leaderboard-stats">
         <div class="stat-card">
-          <div class="stat-value" id="totalTeam">16</div>
+          <div class="stat-value" id="totalTeam">15</div>
           <div class="stat-label">Team Members</div>
         </div>
         <div class="stat-card">
@@ -471,60 +1120,68 @@
         </div>
         <div class="stat-card">
           <div class="stat-value" id="avgOverall">—</div>
-          <div class="stat-label">Overall Average</div>
+          <div class="stat-label">Team Level</div>
         </div>
       </div>
-      
+
       <div class="team-grid" id="teamGrid"></div>
-      
-      <div class="cta-banner">
-        <h3>📈 Track Progress Over Time</h3>
-        <p>Save your scores to keep track of team development and growth.</p>
-        <button class="btn" onclick="saveData()">💾 Save All Changes</button>
-      </div>
     </div>
-    
-    <div id="summary" class="section">
+
+    <div id="leaderboard" class="section">
       <table class="summary-table">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Rank</th>
+            <th>Player</th>
             <th>Role</th>
-            <th>Technical Avg</th>
-            <th>Soft Skills Avg</th>
+            <th>Technical</th>
+            <th>Soft Skills</th>
             <th>Overall</th>
+            <th>Tier</th>
           </tr>
         </thead>
-        <tbody id="summaryBody"></tbody>
+        <tbody id="leaderboardBody"></tbody>
       </table>
     </div>
-    
-    <div id="technical" class="section">
-      <div class="rubric-grid" id="technicalRubrics"></div>
-    </div>
-    
-    <div id="soft" class="section">
-      <div class="rubric-grid" id="softRubrics"></div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-header" id="modalHeader">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Populated by JS -->
+      </div>
     </div>
   </div>
-  
-  <button class="btn btn-primary save-btn" onclick="saveData()">💾 Save Changes</button>
-  <div class="toast" id="toast">✓ Changes saved!</div>
+
+  <!-- Achievement Popup -->
+  <div class="achievement-popup" id="achievementPopup">
+    <div class="badge-icon" id="achievementIcon">🏆</div>
+    <h3 id="achievementTitle">Badge Earned!</h3>
+    <p id="achievementDesc">You've reached a new level!</p>
+  </div>
+
+  <button class="btn btn-primary save-btn" onclick="saveData()">💾 Save Progress</button>
+  <div class="toast" id="toast">✨ Progress saved!</div>
 
 <script>
 const TECHNICAL_SKILLS = [
-  { key: 'planning_pipeline', label: 'Planning (Pipeline)' },
-  { key: 'planning_revenue', label: 'Planning (Revenue)' },
-  { key: 'process_pipeline', label: 'Process (Pipeline)' },
-  { key: 'process_revenue', label: 'Process (Revenue)' },
-  { key: 'systems_pipeline', label: 'Systems (Pipeline)' },
-  { key: 'systems_revenue', label: 'Systems (Revenue)' },
-  { key: 'reporting_pipeline', label: 'Reporting (Pipeline)' },
-  { key: 'reporting_revenue', label: 'Reporting (Revenue)' },
-  { key: 'enablement_pipeline', label: 'Enablement (Pipeline)' },
-  { key: 'enablement_revenue', label: 'Enablement (Revenue)' },
-  { key: 'people_pipeline', label: 'People (Pipeline)' },
-  { key: 'people_revenue', label: 'People (Revenue)' }
+  { key: 'planning_pipeline', label: 'Planning (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'planning_revenue', label: 'Planning (Revenue)', category: 'Revenue Ops' },
+  { key: 'process_pipeline', label: 'Process (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'process_revenue', label: 'Process (Revenue)', category: 'Revenue Ops' },
+  { key: 'systems_pipeline', label: 'Systems (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'systems_revenue', label: 'Systems (Revenue)', category: 'Revenue Ops' },
+  { key: 'reporting_pipeline', label: 'Reporting (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'reporting_revenue', label: 'Reporting (Revenue)', category: 'Revenue Ops' },
+  { key: 'enablement_pipeline', label: 'Enablement (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'enablement_revenue', label: 'Enablement (Revenue)', category: 'Revenue Ops' },
+  { key: 'people_pipeline', label: 'People (Pipeline)', category: 'Pipeline Ops' },
+  { key: 'people_revenue', label: 'People (Revenue)', category: 'Revenue Ops' }
 ];
 
 const SOFT_SKILLS = [
@@ -536,84 +1193,84 @@ const SOFT_SKILLS = [
 ];
 
 const TECHNICAL_RUBRICS = {
-  'Planning (Pipeline)': [
+  'planning_pipeline': [
     { score: 1, desc: 'Learning basic planning concepts; needs guidance on growth models and budgeting' },
     { score: 2, desc: 'Can follow established planning frameworks; assists with quota/budget creation' },
     { score: 3, desc: 'Independently builds channel quotas, marketing budgets, and ICP analysis' },
     { score: 4, desc: 'Designs multi-channel pipeline planning strategies; leads planning sessions' },
     { score: 5, desc: 'Creates innovative planning methodologies; benchmarks against industry best practices' }
   ],
-  'Planning (Revenue)': [
+  'planning_revenue': [
     { score: 1, desc: 'Learning capacity planning basics; needs guidance on territory design' },
     { score: 2, desc: 'Can follow established capacity models; assists with territory assignments' },
     { score: 3, desc: 'Independently builds capacity plans, territory designs, and sales quotas' },
     { score: 4, desc: 'Designs complex territory strategies; optimizes quota distribution' },
     { score: 5, desc: 'Creates scalable planning frameworks; advises on M&A territory integration' }
   ],
-  'Process (Pipeline)': [
+  'process_pipeline': [
     { score: 1, desc: 'Learning lead lifecycle concepts; needs guidance on routing rules' },
     { score: 2, desc: 'Can configure basic lead routing; understands lifecycle stages' },
     { score: 3, desc: 'Designs lead lifecycle, scoring models, and attribution methodology' },
     { score: 4, desc: 'Optimizes conversion across lifecycle; implements ABM processes' },
     { score: 5, desc: 'Innovates lifecycle automation; creates industry-leading attribution models' }
   ],
-  'Process (Revenue)': [
+  'process_revenue': [
     { score: 1, desc: 'Learning sales lifecycle basics; needs guidance on handoff processes' },
     { score: 2, desc: 'Can configure basic sales stages; understands opportunity management' },
     { score: 3, desc: 'Designs sales lifecycle, handoffs, and comp plan structures' },
     { score: 4, desc: 'Optimizes sales methodology; implements complex CPQ workflows' },
     { score: 5, desc: 'Creates scalable sales processes; designs enterprise deal desk operations' }
   ],
-  'Systems (Pipeline)': [
+  'systems_pipeline': [
     { score: 1, desc: 'Learning MAP basics; needs guidance on system configuration' },
     { score: 2, desc: 'Can perform basic MAP tasks; understands CRM-MAP integration' },
     { score: 3, desc: 'Independently manages MAP, ABM platforms, and email automation' },
     { score: 4, desc: 'Architects complex integrations; optimizes tech stack performance' },
     { score: 5, desc: 'Designs enterprise-scale martech architecture; evaluates emerging tools' }
   ],
-  'Systems (Revenue)': [
+  'systems_revenue': [
     { score: 1, desc: 'Learning CRM basics; needs guidance on system administration' },
     { score: 2, desc: 'Can perform basic CRM tasks; understands sales automation' },
     { score: 3, desc: 'Independently manages CRM, CPQ, and revenue intelligence tools' },
     { score: 4, desc: 'Architects complex sales tech stack; implements conversation intelligence' },
     { score: 5, desc: 'Designs enterprise-scale revenue architecture; leads system migrations' }
   ],
-  'Reporting (Pipeline)': [
+  'reporting_pipeline': [
     { score: 1, desc: 'Learning basic reporting; needs guidance on metrics' },
     { score: 2, desc: 'Can build simple reports; understands marketing KPIs' },
     { score: 3, desc: 'Builds daily/weekly/monthly marketing reports independently' },
     { score: 4, desc: 'Designs executive dashboards; creates predictive pipeline models' },
     { score: 5, desc: 'Innovates reporting methodology; builds board-level marketing analytics' }
   ],
-  'Reporting (Revenue)': [
+  'reporting_revenue': [
     { score: 1, desc: 'Learning basic reporting; needs guidance on sales metrics' },
     { score: 2, desc: 'Can build simple reports; understands revenue KPIs' },
     { score: 3, desc: 'Builds daily/weekly/monthly revenue reports independently' },
     { score: 4, desc: 'Designs executive dashboards; creates forecasting models' },
     { score: 5, desc: 'Innovates reporting methodology; builds board-level revenue analytics' }
   ],
-  'Enablement (Pipeline)': [
+  'enablement_pipeline': [
     { score: 1, desc: 'Learning enablement basics; needs guidance on content management' },
     { score: 2, desc: 'Can update existing enablement materials; understands training needs' },
     { score: 3, desc: 'Creates marketing enablement content; manages enablement platforms' },
     { score: 4, desc: 'Designs comprehensive enablement programs; leads training sessions' },
     { score: 5, desc: 'Innovates enablement methodology; builds scalable training frameworks' }
   ],
-  'Enablement (Revenue)': [
+  'enablement_revenue': [
     { score: 1, desc: 'Learning enablement basics; needs guidance on sales training' },
     { score: 2, desc: 'Can update existing materials; understands rep onboarding needs' },
     { score: 3, desc: 'Creates sales enablement content; manages playbooks and QBRs' },
     { score: 4, desc: 'Designs comprehensive sales training; leads methodology rollouts' },
     { score: 5, desc: 'Innovates enablement methodology; builds enterprise onboarding programs' }
   ],
-  'People (Pipeline)': [
+  'people_pipeline': [
     { score: 1, desc: 'Learning team dynamics; needs guidance on cross-functional work' },
     { score: 2, desc: 'Collaborates effectively with marketing/partner teams' },
     { score: 3, desc: 'Manages stakeholder relationships; coordinates cross-team initiatives' },
     { score: 4, desc: 'Leads cross-functional projects; mentors junior team members' },
     { score: 5, desc: 'Builds high-performing teams; advises on org design and hiring' }
   ],
-  'People (Revenue)': [
+  'people_revenue': [
     { score: 1, desc: 'Learning team dynamics; needs guidance on sales/CS collaboration' },
     { score: 2, desc: 'Collaborates effectively with sales/CS teams' },
     { score: 3, desc: 'Manages stakeholder relationships; coordinates revenue initiatives' },
@@ -623,40 +1280,40 @@ const TECHNICAL_RUBRICS = {
 };
 
 const SOFT_RUBRICS = {
-  'Communication': [
-    { score: 1, desc: 'Struggles with clear communication; messages often need clarification' },
-    { score: 2, desc: 'Communicates adequately; occasional misunderstandings with stakeholders' },
-    { score: 3, desc: 'Clear, professional communication; adapts style to audience effectively' },
-    { score: 4, desc: 'Excellent communicator; influences decisions and aligns stakeholders' },
-    { score: 5, desc: 'Exceptional communication skills; trusted advisor to executives' }
+  'communication': [
+    { score: 1, desc: 'Struggles to articulate ideas clearly; written/verbal communication needs improvement' },
+    { score: 2, desc: 'Communicates adequately but sometimes lacks clarity or conciseness' },
+    { score: 3, desc: 'Clear and effective communicator; adapts style to audience; handles client calls professionally' },
+    { score: 4, desc: 'Excellent communicator; leads client presentations confidently; navigates difficult conversations' },
+    { score: 5, desc: 'Exceptional communicator; inspires and influences at executive level; trusted advisor status' }
   ],
-  'Organization': [
-    { score: 1, desc: 'Struggles with task management; frequently misses deadlines' },
-    { score: 2, desc: 'Manages routine tasks; needs help prioritizing competing demands' },
-    { score: 3, desc: 'Well-organized; manages multiple projects with minimal oversight' },
-    { score: 4, desc: 'Highly organized; creates systems others can follow' },
-    { score: 5, desc: 'Exceptional organization; optimizes team workflows and processes' }
+  'organization': [
+    { score: 1, desc: 'Struggles with task management; often misses deadlines; needs frequent reminders' },
+    { score: 2, desc: 'Manages routine tasks adequately; occasionally misses details' },
+    { score: 3, desc: 'Well-organized; manages multiple projects effectively; meets deadlines consistently' },
+    { score: 4, desc: 'Highly organized; manages complex workloads seamlessly; helps organize team efforts' },
+    { score: 5, desc: 'Exceptionally organized; creates systems others adopt; brings order to ambiguous situations' }
   ],
-  'Diligence': [
-    { score: 1, desc: 'Inconsistent attention to detail; errors require frequent correction' },
-    { score: 2, desc: 'Generally careful; occasionally misses important details' },
-    { score: 3, desc: 'Thorough and reliable; consistently delivers quality work' },
-    { score: 4, desc: 'Exceptionally diligent; catches issues others miss' },
-    { score: 5, desc: 'Sets the standard for quality; establishes QA processes for team' }
+  'diligence': [
+    { score: 1, desc: 'Work quality inconsistent; requires multiple reviews; needs oversight' },
+    { score: 2, desc: 'Adequate attention to detail; occasional errors; completes work but may miss edge cases' },
+    { score: 3, desc: 'Thorough and reliable; double-checks work; catches own mistakes; consistent quality' },
+    { score: 4, desc: 'Meticulous attention to detail; goes above standard; anticipates issues before they arise' },
+    { score: 5, desc: 'Exceptional diligence; sets quality standard for team; catches issues others miss' }
   ],
-  'Leadership': [
-    { score: 1, desc: 'Focuses on individual tasks; hesitant to take initiative' },
-    { score: 2, desc: 'Shows leadership potential; takes ownership when asked' },
-    { score: 3, desc: 'Natural leader; proactively drives initiatives and guides peers' },
-    { score: 4, desc: 'Strong leader; develops others and leads complex initiatives' },
-    { score: 5, desc: 'Exceptional leader; shapes culture and strategy across organization' }
+  'leadership': [
+    { score: 1, desc: 'Hesitant to take initiative; waits for direction; uncomfortable leading' },
+    { score: 2, desc: 'Takes initiative on familiar tasks; can lead small efforts with guidance' },
+    { score: 3, desc: 'Proactively leads projects; makes decisions confidently; takes ownership of outcomes' },
+    { score: 4, desc: 'Strong leader; inspires others; navigates ambiguity well; develops junior members' },
+    { score: 5, desc: 'Exceptional leader; builds and motivates high-performing teams; influences strategy' }
   ],
-  'Value Alignment': [
-    { score: 1, desc: 'Limited understanding of company values; actions sometimes conflict' },
-    { score: 2, desc: 'Understands values; occasionally needs reminders on alignment' },
-    { score: 3, desc: 'Embodies company values; decisions consistently reflect principles' },
-    { score: 4, desc: 'Champion of values; reinforces culture and coaches others' },
-    { score: 5, desc: 'Culture carrier; defines and evolves organizational values' }
+  'value_alignment': [
+    { score: 1, desc: 'Actions sometimes conflict with company values; cultural fit unclear' },
+    { score: 2, desc: 'Generally aligned with values; occasional lapses; understands expectations' },
+    { score: 3, desc: 'Consistently demonstrates company values; acts with integrity; client-first mindset' },
+    { score: 4, desc: 'Strong values ambassador; models behavior for others; elevates culture' },
+    { score: 5, desc: 'Exceptional values alignment; defines and shapes culture; embodies company mission' }
   ]
 };
 
@@ -675,17 +1332,80 @@ let teamData = [
   { name: 'Solange', role: 'Engineer', scores: {} },
   { name: 'Diego', role: 'Engineer', scores: {} },
   { name: 'Ambrstack', role: 'Engineer', scores: {} },
-  { name: 'Sarmad', role: 'Engineer', scores: {} },
-  { name: 'Amanda M', role: 'Architect', scores: {} }
+  { name: 'Sarmad', role: 'Engineer', scores: {} }
 ];
 
-const saved = localStorage.getItem('leanscale_scorecard');
-if (saved) teamData = JSON.parse(saved);
+let currentPersonIdx = null;
+let previousBadges = {};
+
+const saved = localStorage.getItem('leanscale_scorecard_v2');
+if (saved) {
+  teamData = JSON.parse(saved);
+}
+
+// Initialize previous badges state
+teamData.forEach((p, idx) => {
+  previousBadges[idx] = {
+    tech: getBadgeTier(calculateAvg(p, TECHNICAL_SKILLS)),
+    soft: getBadgeTier(calculateAvg(p, SOFT_SKILLS))
+  };
+});
+
+function getInitials(name) {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+}
 
 function calculateAvg(person, skills) {
   const vals = skills.map(s => person.scores[s.key]).filter(v => v && v > 0);
   if (vals.length === 0) return null;
   return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+}
+
+function getBadgeTier(avg) {
+  if (!avg) return null;
+  const val = parseFloat(avg);
+  if (val >= 4.5) return 'platinum';
+  if (val >= 3.5) return 'gold';
+  if (val >= 2.5) return 'silver';
+  if (val >= 1.0) return 'bronze';
+  return null;
+}
+
+function getBadgeIcon(tier) {
+  const icons = {
+    bronze: '🥉',
+    silver: '🥈',
+    gold: '🥇',
+    platinum: '💎'
+  };
+  return icons[tier] || '';
+}
+
+function getBadgeLabel(tier) {
+  const labels = {
+    bronze: 'Bronze',
+    silver: 'Silver',
+    gold: 'Gold',
+    platinum: 'Platinum'
+  };
+  return labels[tier] || '';
+}
+
+function getCardTierClass(person) {
+  const overall = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  return getBadgeTier(overall) || '';
+}
+
+function getXPPercentage(avg) {
+  if (!avg) return 0;
+  return (parseFloat(avg) / 5) * 100;
+}
+
+function getCurrentLevelDesc(skillKey, score, isTechnical = true) {
+  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skillKey] : SOFT_RUBRICS[skillKey];
+  if (!rubrics || !score) return 'No score yet - click to evaluate';
+  const item = rubrics.find(r => r.score === score);
+  return item ? item.desc : 'No score yet - click to evaluate';
 }
 
 function updateGlobalStats() {
@@ -698,7 +1418,7 @@ function updateGlobalStats() {
     if (s) allSoft.push(parseFloat(s));
     if (o) allOverall.push(parseFloat(o));
   });
-  
+
   document.getElementById('avgTech').textContent = allTech.length ? (allTech.reduce((a,b)=>a+b,0)/allTech.length).toFixed(1) : '—';
   document.getElementById('avgSoft').textContent = allSoft.length ? (allSoft.reduce((a,b)=>a+b,0)/allSoft.length).toFixed(1) : '—';
   document.getElementById('avgOverall').textContent = allOverall.length ? (allOverall.reduce((a,b)=>a+b,0)/allOverall.length).toFixed(1) : '—';
@@ -706,147 +1426,299 @@ function updateGlobalStats() {
 
 function renderTeamGrid() {
   const grid = document.getElementById('teamGrid');
-  grid.innerHTML = teamData.map((person, idx) => `
-    <div class="card">
-      <div class="person-header">
-        <span class="person-name">${person.name}</span>
-        <span class="person-role">${person.role}</span>
-      </div>
-      <div class="person-scores">
-        <div class="score-section">
-          <div class="score-section-title">Technical Skills</div>
-          ${TECHNICAL_SKILLS.map(s => `
-            <div class="score-row">
-              <span class="score-label">${s.label}</span>
-              <input type="number" class="score-input" min="1" max="5" 
-                value="${person.scores[s.key] || ''}" 
-                data-person="${idx}" data-skill="${s.key}"
-                onchange="updateScore(this)">
+  grid.innerHTML = teamData.map((person, idx) => {
+    const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
+    const softAvg = calculateAvg(person, SOFT_SKILLS);
+    const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+    const tierClass = getCardTierClass(person);
+    const techBadge = getBadgeTier(techAvg);
+    const softBadge = getBadgeTier(softAvg);
+
+    return `
+      <div class="character-card ${tierClass}" onclick="openProfile(${idx})">
+        <div class="card-header">
+          <div class="avatar">${getInitials(person.name)}</div>
+          <div class="character-info">
+            <div class="character-name">${person.name}</div>
+            <span class="character-role">${person.role}</span>
+          </div>
+          ${overallAvg ? `<div class="level-badge">LVL ${Math.floor(parseFloat(overallAvg))}</div>` : ''}
+        </div>
+
+        <div class="xp-section">
+          <div class="xp-group">
+            <div class="xp-group-header">
+              <span class="xp-group-title">Technical Skills</span>
+              <span class="xp-group-score">${techAvg || '—'}</span>
             </div>
-          `).join('')}
-        </div>
-        <div class="score-section">
-          <div class="score-section-title">Soft Skills</div>
-          ${SOFT_SKILLS.map(s => `
-            <div class="score-row">
-              <span class="score-label">${s.label}</span>
-              <input type="number" class="score-input" min="1" max="5" 
-                value="${person.scores[s.key] || ''}" 
-                data-person="${idx}" data-skill="${s.key}"
-                onchange="updateScore(this)">
+            <div class="xp-bar-container">
+              <div class="xp-bar-fill" style="width: ${getXPPercentage(techAvg)}%"></div>
             </div>
-          `).join('')}
+          </div>
+
+          <div class="xp-group">
+            <div class="xp-group-header">
+              <span class="xp-group-title">Soft Skills</span>
+              <span class="xp-group-score">${softAvg || '—'}</span>
+            </div>
+            <div class="xp-bar-container">
+              <div class="xp-bar-fill" style="width: ${getXPPercentage(softAvg)}%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="badges-section">
+          <div class="badge bronze ${techBadge === 'bronze' ? 'earned' : ''}">
+            <span class="badge-icon">🥉</span> Tech
+          </div>
+          <div class="badge silver ${techBadge === 'silver' ? 'earned' : ''}">
+            <span class="badge-icon">🥈</span> Tech
+          </div>
+          <div class="badge gold ${techBadge === 'gold' ? 'earned' : ''}">
+            <span class="badge-icon">🥇</span> Tech
+          </div>
+          <div class="badge platinum ${techBadge === 'platinum' ? 'earned' : ''}">
+            <span class="badge-icon">💎</span> Tech
+          </div>
+          <div class="badge bronze ${softBadge === 'bronze' ? 'earned' : ''}">
+            <span class="badge-icon">🥉</span> Soft
+          </div>
+          <div class="badge silver ${softBadge === 'silver' ? 'earned' : ''}">
+            <span class="badge-icon">🥈</span> Soft
+          </div>
+          <div class="badge gold ${softBadge === 'gold' ? 'earned' : ''}">
+            <span class="badge-icon">🥇</span> Soft
+          </div>
+          <div class="badge platinum ${softBadge === 'platinum' ? 'earned' : ''}">
+            <span class="badge-icon">💎</span> Soft
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="overall-score">
+            <span class="overall-label">Overall</span>
+            <span class="overall-value">${overallAvg || '—'}</span>
+          </div>
+          <button class="view-profile-btn" onclick="event.stopPropagation(); openProfile(${idx})">
+            Review Skills →
+          </button>
         </div>
       </div>
-      <div class="averages">
-        <div class="avg-item">
-          <div class="avg-label">Technical</div>
-          <div class="avg-value ${calculateAvg(person, TECHNICAL_SKILLS) ? '' : 'empty'}" id="tech-avg-${idx}">
-            ${calculateAvg(person, TECHNICAL_SKILLS) || '—'}
-          </div>
-        </div>
-        <div class="avg-item">
-          <div class="avg-label">Soft Skills</div>
-          <div class="avg-value ${calculateAvg(person, SOFT_SKILLS) ? '' : 'empty'}" id="soft-avg-${idx}">
-            ${calculateAvg(person, SOFT_SKILLS) || '—'}
-          </div>
-        </div>
-        <div class="avg-item">
-          <div class="avg-label">Overall</div>
-          <div class="avg-value ${calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]) ? '' : 'empty'}" id="overall-avg-${idx}">
-            ${calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]) || '—'}
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
+
   updateGlobalStats();
 }
 
-function renderSummary() {
-  const body = document.getElementById('summaryBody');
-  body.innerHTML = teamData.map(person => {
-    const tech = calculateAvg(person, TECHNICAL_SKILLS);
-    const soft = calculateAvg(person, SOFT_SKILLS);
-    const overall = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+function renderLeaderboard() {
+  const sorted = teamData.map((p, idx) => ({
+    ...p,
+    idx,
+    techAvg: calculateAvg(p, TECHNICAL_SKILLS),
+    softAvg: calculateAvg(p, SOFT_SKILLS),
+    overallAvg: calculateAvg(p, [...TECHNICAL_SKILLS, ...SOFT_SKILLS])
+  })).sort((a, b) => {
+    if (!a.overallAvg && !b.overallAvg) return 0;
+    if (!a.overallAvg) return 1;
+    if (!b.overallAvg) return -1;
+    return parseFloat(b.overallAvg) - parseFloat(a.overallAvg);
+  });
+
+  const body = document.getElementById('leaderboardBody');
+  body.innerHTML = sorted.map((person, rank) => {
+    const tier = getBadgeTier(person.overallAvg);
+    const badgeClass = tier || '';
+
     return `
-      <tr>
+      <tr onclick="openProfile(${person.idx})">
+        <td><strong>#${rank + 1}</strong></td>
         <td><strong>${person.name}</strong></td>
         <td>${person.role}</td>
-        <td>${tech || '—'}</td>
-        <td>${soft || '—'}</td>
-        <td><strong>${overall || '—'}</strong></td>
+        <td>${person.techAvg || '—'}</td>
+        <td>${person.softAvg || '—'}</td>
+        <td><strong>${person.overallAvg || '—'}</strong></td>
+        <td>
+          ${tier ? `
+            <span class="summary-badge badge ${badgeClass} earned">
+              ${getBadgeIcon(tier)} ${getBadgeLabel(tier)}
+            </span>
+          ` : '—'}
+        </td>
       </tr>
     `;
   }).join('');
 }
 
-function renderRubrics() {
-  const techDiv = document.getElementById('technicalRubrics');
-  techDiv.innerHTML = Object.entries(TECHNICAL_RUBRICS).map(([cat, items]) => `
-    <div class="rubric-category">
-      <div class="rubric-header">${cat}</div>
-      <table class="rubric-table">
-        <thead><tr><th style="width:60px">Score</th><th>Criteria</th></tr></thead>
-        <tbody>
-          ${items.map(i => `
-            <tr>
-              <td><span class="score-badge">${i.score}</span></td>
-              <td>${i.desc}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+function openProfile(idx) {
+  currentPersonIdx = idx;
+  const person = teamData[idx];
+  const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
+  const softAvg = calculateAvg(person, SOFT_SKILLS);
+  const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const techBadge = getBadgeTier(techAvg);
+  const softBadge = getBadgeTier(softAvg);
+  const overallBadge = getBadgeTier(overallAvg);
+
+  document.getElementById('modalHeader').innerHTML = `
+    <div class="modal-avatar">${getInitials(person.name)}</div>
+    <div class="modal-character-info">
+      <h2>${person.name}</h2>
+      <span class="character-role">${person.role}</span>
+      <div class="modal-badges">
+        ${techBadge ? `<span class="badge ${techBadge} earned">${getBadgeIcon(techBadge)} Technical ${getBadgeLabel(techBadge)}</span>` : ''}
+        ${softBadge ? `<span class="badge ${softBadge} earned">${getBadgeIcon(softBadge)} Soft Skills ${getBadgeLabel(softBadge)}</span>` : ''}
+        ${overallBadge ? `<span class="badge ${overallBadge} earned">${getBadgeIcon(overallBadge)} Overall ${getBadgeLabel(overallBadge)}</span>` : ''}
+      </div>
     </div>
-  `).join('');
-  
-  const softDiv = document.getElementById('softRubrics');
-  softDiv.innerHTML = Object.entries(SOFT_RUBRICS).map(([cat, items]) => `
-    <div class="rubric-category">
-      <div class="rubric-header">${cat}</div>
-      <table class="rubric-table">
-        <thead><tr><th style="width:60px">Score</th><th>Criteria</th></tr></thead>
-        <tbody>
-          ${items.map(i => `
-            <tr>
-              <td><span class="score-badge">${i.score}</span></td>
-              <td>${i.desc}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+  `;
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="skills-section">
+      <div class="skills-header">
+        <span class="skills-title">⚡ Technical Skills</span>
+        <span class="skills-avg">${techAvg || '—'} / 5.0</span>
+      </div>
+      ${TECHNICAL_SKILLS.map(skill => renderSkillRow(person, skill, true)).join('')}
     </div>
-  `).join('');
+
+    <div class="skills-section">
+      <div class="skills-header">
+        <span class="skills-title">🎯 Soft Skills</span>
+        <span class="skills-avg">${softAvg || '—'} / 5.0</span>
+      </div>
+      ${SOFT_SKILLS.map(skill => renderSkillRow(person, skill, false)).join('')}
+    </div>
+  `;
+
+  document.getElementById('profileModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-function updateScore(input) {
-  const idx = parseInt(input.dataset.person);
-  const skill = input.dataset.skill;
-  const val = parseInt(input.value) || null;
-  
-  if (val && (val < 1 || val > 5)) { input.value = ''; return; }
-  
-  teamData[idx].scores[skill] = val;
-  
-  const techAvg = calculateAvg(teamData[idx], TECHNICAL_SKILLS);
-  const softAvg = calculateAvg(teamData[idx], SOFT_SKILLS);
-  const overallAvg = calculateAvg(teamData[idx], [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
-  
-  document.getElementById(`tech-avg-${idx}`).textContent = techAvg || '—';
-  document.getElementById(`soft-avg-${idx}`).textContent = softAvg || '—';
-  document.getElementById(`overall-avg-${idx}`).textContent = overallAvg || '—';
-  
-  updateGlobalStats();
+function renderSkillRow(person, skill, isTechnical) {
+  const score = person.scores[skill.key] || null;
+  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skill.key] : SOFT_RUBRICS[skill.key];
+
+  return `
+    <div class="skill-row" id="skill-${skill.key}">
+      <div class="skill-main" onclick="toggleSkillRubric('${skill.key}')">
+        <div class="skill-info">
+          <div class="skill-name">${skill.label}</div>
+          <div class="skill-current-desc">${getCurrentLevelDesc(skill.key, score, isTechnical)}</div>
+        </div>
+        <div class="skill-score-input">
+          ${[1,2,3,4,5].map(n => `
+            <button class="score-btn ${score === n ? 'active' : ''}"
+                    onclick="event.stopPropagation(); setScore('${skill.key}', ${n}, ${isTechnical})">
+              ${n}
+            </button>
+          `).join('')}
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+      <div class="skill-rubric">
+        <table class="rubric-table">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Criteria</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rubrics.map(r => `
+              <tr class="${score === r.score ? 'current-level' : ''}">
+                <td class="rubric-score">${r.score}</td>
+                <td>${r.desc}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function toggleSkillRubric(skillKey) {
+  const row = document.getElementById(`skill-${skillKey}`);
+  row.classList.toggle('expanded');
+}
+
+function setScore(skillKey, score, isTechnical) {
+  if (currentPersonIdx === null) return;
+
+  const person = teamData[currentPersonIdx];
+  const oldTechAvg = calculateAvg(person, TECHNICAL_SKILLS);
+  const oldSoftAvg = calculateAvg(person, SOFT_SKILLS);
+  const oldTechBadge = getBadgeTier(oldTechAvg);
+  const oldSoftBadge = getBadgeTier(oldSoftAvg);
+
+  // Toggle score off if clicking same value
+  if (person.scores[skillKey] === score) {
+    person.scores[skillKey] = null;
+  } else {
+    person.scores[skillKey] = score;
+  }
+
+  // Check for new badges
+  const newTechAvg = calculateAvg(person, TECHNICAL_SKILLS);
+  const newSoftAvg = calculateAvg(person, SOFT_SKILLS);
+  const newTechBadge = getBadgeTier(newTechAvg);
+  const newSoftBadge = getBadgeTier(newSoftAvg);
+
+  // Show achievement if badge upgraded
+  if (isTechnical && newTechBadge && newTechBadge !== oldTechBadge &&
+      getTierRank(newTechBadge) > getTierRank(oldTechBadge)) {
+    showAchievement(newTechBadge, 'Technical');
+  } else if (!isTechnical && newSoftBadge && newSoftBadge !== oldSoftBadge &&
+             getTierRank(newSoftBadge) > getTierRank(oldSoftBadge)) {
+    showAchievement(newSoftBadge, 'Soft Skills');
+  }
+
+  // Refresh modal content
+  openProfile(currentPersonIdx);
+  renderRoleGrids();
+  renderTeamGrid();
+  renderLeaderboard();
+}
+
+function getTierRank(tier) {
+  const ranks = { bronze: 1, silver: 2, gold: 3, platinum: 4 };
+  return ranks[tier] || 0;
+}
+
+function showAchievement(tier, category) {
+  const popup = document.getElementById('achievementPopup');
+  document.getElementById('achievementIcon').textContent = getBadgeIcon(tier);
+  document.getElementById('achievementTitle').textContent = `${getBadgeLabel(tier)} Badge Earned!`;
+  document.getElementById('achievementDesc').textContent = `${teamData[currentPersonIdx].name} reached ${getBadgeLabel(tier)} tier in ${category}!`;
+
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 2500);
+}
+
+function closeModal() {
+  document.getElementById('profileModal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentPersonIdx = null;
 }
 
 function saveData() {
-  localStorage.setItem('leanscale_scorecard', JSON.stringify(teamData));
+  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
   const toast = document.getElementById('toast');
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2000);
-  renderSummary();
 }
 
+// Close modal on escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Close modal on overlay click
+document.getElementById('profileModal').addEventListener('click', (e) => {
+  if (e.target.id === 'profileModal') closeModal();
+});
+
+// Tab navigation
 document.querySelectorAll('.nav-link').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
@@ -856,9 +1728,107 @@ document.querySelectorAll('.nav-link').forEach(tab => {
   });
 });
 
+function renderCompactCard(person, idx) {
+  const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
+  const softAvg = calculateAvg(person, SOFT_SKILLS);
+  const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const tierClass = getCardTierClass(person);
+  const techBadge = getBadgeTier(techAvg);
+  const softBadge = getBadgeTier(softAvg);
+  const overallBadge = getBadgeTier(overallAvg);
+
+  return `
+    <div class="character-card-compact ${tierClass}" onclick="openProfile(${idx})">
+      <div class="compact-header">
+        <div class="compact-avatar">${getInitials(person.name)}</div>
+        <div class="compact-info">
+          <div class="compact-name">${person.name}</div>
+          <div class="compact-level">${overallAvg ? `Level ${Math.floor(parseFloat(overallAvg))}` : 'Unrated'}</div>
+        </div>
+        ${overallBadge ? `<span class="compact-badge">${getBadgeIcon(overallBadge)}</span>` : ''}
+      </div>
+      <div class="compact-stats">
+        <div class="compact-stat">
+          <div class="compact-stat-value">${techAvg || '—'}</div>
+          <div class="compact-stat-label">Technical</div>
+        </div>
+        <div class="compact-stat">
+          <div class="compact-stat-value">${softAvg || '—'}</div>
+          <div class="compact-stat-label">Soft Skills</div>
+        </div>
+        <div class="compact-stat">
+          <div class="compact-stat-value">${overallAvg || '—'}</div>
+          <div class="compact-stat-label">Overall</div>
+        </div>
+      </div>
+      <div class="compact-badges">
+        ${techBadge ? `<span class="badge ${techBadge} earned">${getBadgeIcon(techBadge)} Tech</span>` : ''}
+        ${softBadge ? `<span class="badge ${softBadge} earned">${getBadgeIcon(softBadge)} Soft</span>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderRoleGrids() {
+  const architects = [];
+  const engineers = [];
+
+  teamData.forEach((person, idx) => {
+    if (person.role === 'Architect') {
+      architects.push({ person, idx });
+    } else {
+      engineers.push({ person, idx });
+    }
+  });
+
+  // Render architect grid
+  document.getElementById('architectGrid').innerHTML = architects
+    .map(({ person, idx }) => renderCompactCard(person, idx))
+    .join('');
+
+  // Render engineer grid
+  document.getElementById('engineerGrid').innerHTML = engineers
+    .map(({ person, idx }) => renderCompactCard(person, idx))
+    .join('');
+
+  // Update counts
+  document.getElementById('architectCount').textContent = `${architects.length} members`;
+  document.getElementById('engineerCount').textContent = `${engineers.length} members`;
+
+  // Calculate role averages
+  function getRoleAvgs(members) {
+    const techAvgs = [], softAvgs = [], overallAvgs = [];
+    members.forEach(({ person }) => {
+      const t = calculateAvg(person, TECHNICAL_SKILLS);
+      const s = calculateAvg(person, SOFT_SKILLS);
+      const o = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+      if (t) techAvgs.push(parseFloat(t));
+      if (s) softAvgs.push(parseFloat(s));
+      if (o) overallAvgs.push(parseFloat(o));
+    });
+    return {
+      tech: techAvgs.length ? (techAvgs.reduce((a,b)=>a+b,0)/techAvgs.length).toFixed(1) : '—',
+      soft: softAvgs.length ? (softAvgs.reduce((a,b)=>a+b,0)/softAvgs.length).toFixed(1) : '—',
+      overall: overallAvgs.length ? (overallAvgs.reduce((a,b)=>a+b,0)/overallAvgs.length).toFixed(1) : '—'
+    };
+  }
+
+  const architectAvgs = getRoleAvgs(architects);
+  const engineerAvgs = getRoleAvgs(engineers);
+
+  document.getElementById('architectTech').textContent = architectAvgs.tech;
+  document.getElementById('architectSoft').textContent = architectAvgs.soft;
+  document.getElementById('architectOverall').textContent = architectAvgs.overall;
+
+  document.getElementById('engineerTech').textContent = engineerAvgs.tech;
+  document.getElementById('engineerSoft').textContent = engineerAvgs.soft;
+  document.getElementById('engineerOverall').textContent = engineerAvgs.overall;
+}
+
+// Initial render
+renderRoleGrids();
 renderTeamGrid();
-renderSummary();
-renderRubrics();
+renderLeaderboard();
 </script>
 </body>
 </html>
