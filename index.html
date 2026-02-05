@@ -28,8 +28,11 @@
       --gold-bg: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
       --platinum: #E5E4E2;
       --platinum-bg: linear-gradient(135deg, #E5E4E2 0%, #A0B2C6 100%);
-      --diamond: #B9F2FF;
-      --diamond-bg: linear-gradient(135deg, #B9F2FF 0%, #7DF9FF 100%);
+
+      /* Candidate colors */
+      --candidate: #0d6efd;
+      --candidate-light: #3d8bfd;
+      --candidate-bg: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
 
       /* XP bar colors */
       --xp-bg: #e0e0e0;
@@ -184,7 +187,6 @@
     .character-card.silver { border-color: var(--silver); }
     .character-card.gold { border-color: var(--gold); }
     .character-card.platinum { border-color: #A0B2C6; }
-    .character-card.diamond { border-color: #7DF9FF; }
 
     .card-header {
       background: var(--primary);
@@ -193,6 +195,10 @@
       align-items: center;
       gap: 1rem;
       position: relative;
+    }
+
+    .card-header.candidate-header {
+      background: var(--candidate-bg);
     }
 
     .avatar {
@@ -344,7 +350,6 @@
     .badge.silver { background: var(--silver-bg); color: #333; }
     .badge.gold { background: var(--gold-bg); color: #333; }
     .badge.platinum { background: var(--platinum-bg); color: #333; }
-    .badge.diamond { background: var(--diamond-bg); color: #333; }
 
     /* Card Footer Stats */
     .card-footer {
@@ -465,6 +470,10 @@
       align-items: center;
       gap: 1.5rem;
       position: relative;
+    }
+
+    .modal-header.candidate-modal-header {
+      background: var(--candidate-bg);
     }
 
     .modal-avatar {
@@ -715,6 +724,41 @@
       transform: translateY(-2px);
     }
 
+    .btn-candidate {
+      background: var(--candidate);
+      color: white;
+    }
+
+    .btn-candidate:hover {
+      background: var(--candidate-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      background: #f5f5f5;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
     .save-btn {
       position: fixed;
       bottom: 1.5rem;
@@ -920,6 +964,10 @@
       gap: 0.75rem;
     }
 
+    .compact-header.candidate {
+      background: var(--candidate-bg);
+    }
+
     .compact-avatar {
       width: 48px;
       height: 48px;
@@ -998,11 +1046,324 @@
       padding: 0.25rem 0.5rem;
     }
 
+    /* Candidates Section */
+    .candidates-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .candidates-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .candidate-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .candidates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #f9f9f9;
+      border-radius: 20px;
+      border: 2px dashed var(--border);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .empty-state p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Add Candidate Form */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Interview Mode */
+    .interview-progress {
+      background: #f5f5f5;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .interview-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .interview-progress-title {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .interview-progress-count {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .interview-progress-bar {
+      height: 8px;
+      background: var(--xp-bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .interview-progress-fill {
+      height: 100%;
+      background: var(--candidate);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .interview-question-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .interview-question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .interview-skill-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--candidate);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .interview-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .interview-followup {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+      border-left: 3px solid var(--border);
+    }
+
+    .interview-scoring {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .interview-score-btn {
+      flex: 1;
+      min-width: 60px;
+      padding: 0.75rem 0.5rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .interview-score-btn:hover {
+      border-color: var(--candidate);
+      background: #f0f7ff;
+    }
+
+    .interview-score-btn.selected {
+      border-color: var(--candidate);
+      background: var(--candidate);
+      color: white;
+    }
+
+    .interview-score-btn .score-num {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .interview-score-btn .score-label {
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .interview-notes {
+      margin-top: 1rem;
+    }
+
+    .interview-notes textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .interview-notes textarea:focus {
+      outline: none;
+      border-color: var(--candidate);
+    }
+
+    .interview-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .interview-section-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .interview-section-tab {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .interview-section-tab:hover {
+      border-color: var(--candidate);
+    }
+
+    .interview-section-tab.active {
+      background: var(--candidate);
+      color: white;
+      border-color: var(--candidate);
+    }
+
+    .interview-section-tab .tab-count {
+      background: rgba(0,0,0,0.1);
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      margin-left: 0.25rem;
+    }
+
+    .interview-section-tab.active .tab-count {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Candidate Status */
+    .candidate-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .candidate-status.new {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .candidate-status.in-progress {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .candidate-status.complete {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .candidate-meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .candidate-meta-item {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.7);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .leaderboard-stats { grid-template-columns: repeat(2, 1fr); }
       .team-grid { grid-template-columns: 1fr; }
       .role-grid { grid-template-columns: 1fr; }
+      .candidates-grid { grid-template-columns: 1fr; }
       .nav { padding: 1rem; flex-direction: column; gap: 1rem; }
       .nav-links { flex-wrap: wrap; justify-content: center; }
       .container { padding: 1rem; }
@@ -1010,6 +1371,9 @@
       .legend { gap: 0.75rem; }
       .role-header { flex-direction: column; text-align: center; }
       .role-stats { flex-wrap: wrap; justify-content: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .candidates-header { flex-direction: column; align-items: stretch; }
+      .candidate-actions { justify-content: center; }
     }
   </style>
 </head>
@@ -1021,6 +1385,7 @@
     <div class="nav-links">
       <button class="nav-link active" data-tab="home">Home</button>
       <button class="nav-link" data-tab="team">Full Roster</button>
+      <button class="nav-link" data-tab="candidates">Candidates</button>
       <button class="nav-link" data-tab="leaderboard">Leaderboard</button>
     </div>
   </nav>
@@ -1127,6 +1492,18 @@
       <div class="team-grid" id="teamGrid"></div>
     </div>
 
+    <div id="candidates" class="section">
+      <div class="candidates-header">
+        <h2>👥 Candidate Pipeline</h2>
+        <div class="candidate-actions">
+          <button class="btn btn-candidate" onclick="openAddCandidateModal()">
+            ➕ Add Candidate
+          </button>
+        </div>
+      </div>
+      <div id="candidatesContent"></div>
+    </div>
+
     <div id="leaderboard" class="section">
       <table class="summary-table">
         <thead>
@@ -1145,16 +1522,69 @@
     </div>
   </div>
 
-  <!-- Profile Modal -->
+  <!-- Profile Modal (Team) -->
   <div class="modal-overlay" id="profileModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">&times;</button>
-      <div class="modal-header" id="modalHeader">
-        <!-- Populated by JS -->
+      <div class="modal-header" id="modalHeader"></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Add Candidate Modal -->
+  <div class="modal-overlay" id="addCandidateModal">
+    <div class="modal-content" style="max-width: 500px;">
+      <button class="modal-close" onclick="closeAddCandidateModal()">&times;</button>
+      <div class="modal-header candidate-modal-header">
+        <div class="modal-avatar">👤</div>
+        <div class="modal-character-info">
+          <h2>Add New Candidate</h2>
+          <span class="character-role">Interview Assessment</span>
+        </div>
       </div>
-      <div class="modal-body" id="modalBody">
-        <!-- Populated by JS -->
+      <div class="modal-body">
+        <form id="addCandidateForm" onsubmit="addCandidate(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              <input type="text" class="form-input" id="candidateFirstName" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              <input type="text" class="form-input" id="candidateLastName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="candidateEmail">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Role *</label>
+            <select class="form-select" id="candidateRole" required>
+              <option value="">Select a role...</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Architect">Architect</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Source</label>
+            <input type="text" class="form-input" id="candidateSource" placeholder="e.g., Referral, LinkedIn, Job Board">
+          </div>
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="button" class="btn btn-outline" style="flex:1" onclick="closeAddCandidateModal()">Cancel</button>
+            <button type="submit" class="btn btn-candidate" style="flex:1">Add & Start Interview</button>
+          </div>
+        </form>
       </div>
+    </div>
+  </div>
+
+  <!-- Candidate Interview Modal -->
+  <div class="modal-overlay" id="candidateModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeCandidateModal()">&times;</button>
+      <div class="modal-header candidate-modal-header" id="candidateModalHeader"></div>
+      <div class="modal-body" id="candidateModalBody"></div>
     </div>
   </div>
 
@@ -1317,6 +1747,98 @@ const SOFT_RUBRICS = {
   ]
 };
 
+// Interview Questions - Startup-focused, quick and punchy
+const INTERVIEW_QUESTIONS = {
+  // Technical Skills - Pipeline
+  'planning_pipeline': {
+    primary: "Walk me through how you'd build a marketing budget from scratch for a new channel. What's your process?",
+    followup: "How do you decide how much to allocate to each channel when you have limited data?",
+    lookFor: "Look for: structured approach, ICP thinking, budget rationale, growth model understanding"
+  },
+  'planning_revenue': {
+    primary: "You need to redesign territories for a sales team that just doubled. Where do you start?",
+    followup: "How do you handle the politics when reps lose accounts they've been working?",
+    lookFor: "Look for: data-driven approach, fairness considerations, change management awareness"
+  },
+  'process_pipeline': {
+    primary: "Our lead-to-opportunity conversion just dropped 20%. How do you diagnose and fix it?",
+    followup: "What's your philosophy on lead scoring - how simple or complex should it be?",
+    lookFor: "Look for: systematic troubleshooting, lifecycle understanding, attribution knowledge"
+  },
+  'process_revenue': {
+    primary: "Sales says deals are getting stuck in the pipeline. What do you look at first?",
+    followup: "Tell me about a handoff process you designed between teams. What made it work?",
+    lookFor: "Look for: stage analysis, bottleneck identification, cross-functional process design"
+  },
+  'systems_pipeline': {
+    primary: "You're inheriting a messy Marketo/HubSpot instance. What's your first week look like?",
+    followup: "When would you recommend a company switch from HubSpot to Marketo, or vice versa?",
+    lookFor: "Look for: audit methodology, integration knowledge, platform expertise"
+  },
+  'systems_revenue': {
+    primary: "The CRM is a mess - duplicates everywhere, fields nobody uses, reps hate it. What's your plan?",
+    followup: "How do you balance CRM simplicity for reps vs. data needs for leadership?",
+    lookFor: "Look for: cleanup strategy, user empathy, data architecture thinking"
+  },
+  'reporting_pipeline': {
+    primary: "CMO asks: 'Is our marketing working?' What dashboard do you build to answer that?",
+    followup: "How do you handle attribution when you have long sales cycles and multiple touches?",
+    lookFor: "Look for: metric selection, executive communication, attribution models"
+  },
+  'reporting_revenue': {
+    primary: "Build me a weekly forecast report from scratch. What metrics matter most?",
+    followup: "Sales leadership doesn't trust the forecast. How do you improve accuracy?",
+    lookFor: "Look for: forecasting methodology, pipeline metrics, data quality awareness"
+  },
+  'enablement_pipeline': {
+    primary: "Marketing team isn't using the content that sales needs. How do you fix the gap?",
+    followup: "What's your approach to training marketing team members on new tools?",
+    lookFor: "Look for: content strategy, cross-team alignment, training methodology"
+  },
+  'enablement_revenue': {
+    primary: "You have 2 weeks to onboard 5 new reps. What's your playbook?",
+    followup: "How do you measure if enablement is actually working?",
+    lookFor: "Look for: onboarding structure, ramp metrics, content organization"
+  },
+  'people_pipeline': {
+    primary: "Marketing and Sales are pointing fingers about lead quality. How do you get them aligned?",
+    followup: "Tell me about a time you had to push back on a stakeholder's request. How'd you handle it?",
+    lookFor: "Look for: conflict resolution, relationship building, influencing skills"
+  },
+  'people_revenue': {
+    primary: "Sales VP wants one thing, CS VP wants another, both impact your project. What do you do?",
+    followup: "How do you build trust with sales reps who've been burned by ops before?",
+    lookFor: "Look for: stakeholder management, prioritization, trust building"
+  },
+
+  // Soft Skills
+  'communication': {
+    primary: "Tell me about a time you had to explain something complex to someone non-technical.",
+    followup: "How do you handle it when you realize mid-meeting that you've lost your audience?",
+    lookFor: "Look for: clarity, audience adaptation, self-awareness"
+  },
+  'organization': {
+    primary: "Walk me through how you manage your work when you have 5 priorities all marked 'urgent'.",
+    followup: "How do you keep track of everything when things are moving fast?",
+    lookFor: "Look for: prioritization framework, tools/systems, realistic about tradeoffs"
+  },
+  'diligence': {
+    primary: "Tell me about a time you caught an error that everyone else missed. What happened?",
+    followup: "How do you balance speed vs. thoroughness in a fast-moving startup?",
+    lookFor: "Look for: attention to detail, quality standards, practical tradeoffs"
+  },
+  'leadership': {
+    primary: "Tell me about a time you led something without having formal authority over the people involved.",
+    followup: "How do you handle it when someone on the project isn't pulling their weight?",
+    lookFor: "Look for: influence without authority, accountability, initiative"
+  },
+  'value_alignment': {
+    primary: "What's the most important thing you look for in a company's culture?",
+    followup: "Tell me about a time your values conflicted with what was being asked of you. What did you do?",
+    lookFor: "Look for: self-awareness, integrity, client-first mindset"
+  }
+};
+
 let teamData = [
   { name: 'David', role: 'Engineer', scores: {} },
   { name: 'John', role: 'Architect', scores: {} },
@@ -1335,13 +1857,18 @@ let teamData = [
   { name: 'Sarmad', role: 'Engineer', scores: {} }
 ];
 
+let candidatesData = [];
 let currentPersonIdx = null;
+let currentCandidateIdx = null;
+let currentInterviewSection = 'all';
 let previousBadges = {};
 
-const saved = localStorage.getItem('leanscale_scorecard_v2');
-if (saved) {
-  teamData = JSON.parse(saved);
-}
+// Load saved data
+const savedTeam = localStorage.getItem('leanscale_scorecard_v2');
+if (savedTeam) teamData = JSON.parse(savedTeam);
+
+const savedCandidates = localStorage.getItem('leanscale_candidates');
+if (savedCandidates) candidatesData = JSON.parse(savedCandidates);
 
 // Initialize previous badges state
 teamData.forEach((p, idx) => {
@@ -1372,22 +1899,12 @@ function getBadgeTier(avg) {
 }
 
 function getBadgeIcon(tier) {
-  const icons = {
-    bronze: '🥉',
-    silver: '🥈',
-    gold: '🥇',
-    platinum: '💎'
-  };
+  const icons = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎' };
   return icons[tier] || '';
 }
 
 function getBadgeLabel(tier) {
-  const labels = {
-    bronze: 'Bronze',
-    silver: 'Silver',
-    gold: 'Gold',
-    platinum: 'Platinum'
-  };
+  const labels = { bronze: 'Bronze', silver: 'Silver', gold: 'Gold', platinum: 'Platinum' };
   return labels[tier] || '';
 }
 
@@ -1406,6 +1923,19 @@ function getCurrentLevelDesc(skillKey, score, isTechnical = true) {
   if (!rubrics || !score) return 'No score yet - click to evaluate';
   const item = rubrics.find(r => r.score === score);
   return item ? item.desc : 'No score yet - click to evaluate';
+}
+
+function getCandidateStatus(candidate) {
+  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length;
+  const scoredSkills = Object.values(candidate.scores || {}).filter(v => v && v > 0).length;
+  if (scoredSkills === 0) return 'new';
+  if (scoredSkills < totalSkills) return 'in-progress';
+  return 'complete';
+}
+
+function getCandidateStatusLabel(status) {
+  const labels = { 'new': 'New', 'in-progress': 'In Progress', 'complete': 'Complete' };
+  return labels[status] || status;
 }
 
 function updateGlobalStats() {
@@ -1444,7 +1974,6 @@ function renderTeamGrid() {
           </div>
           ${overallAvg ? `<div class="level-badge">LVL ${Math.floor(parseFloat(overallAvg))}</div>` : ''}
         </div>
-
         <div class="xp-section">
           <div class="xp-group">
             <div class="xp-group-header">
@@ -1455,7 +1984,6 @@ function renderTeamGrid() {
               <div class="xp-bar-fill" style="width: ${getXPPercentage(techAvg)}%"></div>
             </div>
           </div>
-
           <div class="xp-group">
             <div class="xp-group-header">
               <span class="xp-group-title">Soft Skills</span>
@@ -1466,54 +1994,32 @@ function renderTeamGrid() {
             </div>
           </div>
         </div>
-
         <div class="badges-section">
-          <div class="badge bronze ${techBadge === 'bronze' ? 'earned' : ''}">
-            <span class="badge-icon">🥉</span> Tech
-          </div>
-          <div class="badge silver ${techBadge === 'silver' ? 'earned' : ''}">
-            <span class="badge-icon">🥈</span> Tech
-          </div>
-          <div class="badge gold ${techBadge === 'gold' ? 'earned' : ''}">
-            <span class="badge-icon">🥇</span> Tech
-          </div>
-          <div class="badge platinum ${techBadge === 'platinum' ? 'earned' : ''}">
-            <span class="badge-icon">💎</span> Tech
-          </div>
-          <div class="badge bronze ${softBadge === 'bronze' ? 'earned' : ''}">
-            <span class="badge-icon">🥉</span> Soft
-          </div>
-          <div class="badge silver ${softBadge === 'silver' ? 'earned' : ''}">
-            <span class="badge-icon">🥈</span> Soft
-          </div>
-          <div class="badge gold ${softBadge === 'gold' ? 'earned' : ''}">
-            <span class="badge-icon">🥇</span> Soft
-          </div>
-          <div class="badge platinum ${softBadge === 'platinum' ? 'earned' : ''}">
-            <span class="badge-icon">💎</span> Soft
-          </div>
+          <div class="badge bronze ${techBadge === 'bronze' ? 'earned' : ''}"><span class="badge-icon">🥉</span> Tech</div>
+          <div class="badge silver ${techBadge === 'silver' ? 'earned' : ''}"><span class="badge-icon">🥈</span> Tech</div>
+          <div class="badge gold ${techBadge === 'gold' ? 'earned' : ''}"><span class="badge-icon">🥇</span> Tech</div>
+          <div class="badge platinum ${techBadge === 'platinum' ? 'earned' : ''}"><span class="badge-icon">💎</span> Tech</div>
+          <div class="badge bronze ${softBadge === 'bronze' ? 'earned' : ''}"><span class="badge-icon">🥉</span> Soft</div>
+          <div class="badge silver ${softBadge === 'silver' ? 'earned' : ''}"><span class="badge-icon">🥈</span> Soft</div>
+          <div class="badge gold ${softBadge === 'gold' ? 'earned' : ''}"><span class="badge-icon">🥇</span> Soft</div>
+          <div class="badge platinum ${softBadge === 'platinum' ? 'earned' : ''}"><span class="badge-icon">💎</span> Soft</div>
         </div>
-
         <div class="card-footer">
           <div class="overall-score">
             <span class="overall-label">Overall</span>
             <span class="overall-value">${overallAvg || '—'}</span>
           </div>
-          <button class="view-profile-btn" onclick="event.stopPropagation(); openProfile(${idx})">
-            Review Skills →
-          </button>
+          <button class="view-profile-btn" onclick="event.stopPropagation(); openProfile(${idx})">Review Skills →</button>
         </div>
       </div>
     `;
   }).join('');
-
   updateGlobalStats();
 }
 
 function renderLeaderboard() {
   const sorted = teamData.map((p, idx) => ({
-    ...p,
-    idx,
+    ...p, idx,
     techAvg: calculateAvg(p, TECHNICAL_SKILLS),
     softAvg: calculateAvg(p, SOFT_SKILLS),
     overallAvg: calculateAvg(p, [...TECHNICAL_SKILLS, ...SOFT_SKILLS])
@@ -1524,11 +2030,8 @@ function renderLeaderboard() {
     return parseFloat(b.overallAvg) - parseFloat(a.overallAvg);
   });
 
-  const body = document.getElementById('leaderboardBody');
-  body.innerHTML = sorted.map((person, rank) => {
+  document.getElementById('leaderboardBody').innerHTML = sorted.map((person, rank) => {
     const tier = getBadgeTier(person.overallAvg);
-    const badgeClass = tier || '';
-
     return `
       <tr onclick="openProfile(${person.idx})">
         <td><strong>#${rank + 1}</strong></td>
@@ -1537,16 +2040,84 @@ function renderLeaderboard() {
         <td>${person.techAvg || '—'}</td>
         <td>${person.softAvg || '—'}</td>
         <td><strong>${person.overallAvg || '—'}</strong></td>
-        <td>
-          ${tier ? `
-            <span class="summary-badge badge ${badgeClass} earned">
-              ${getBadgeIcon(tier)} ${getBadgeLabel(tier)}
-            </span>
-          ` : '—'}
-        </td>
+        <td>${tier ? `<span class="summary-badge badge ${tier} earned">${getBadgeIcon(tier)} ${getBadgeLabel(tier)}</span>` : '—'}</td>
       </tr>
     `;
   }).join('');
+}
+
+function renderCandidates() {
+  const content = document.getElementById('candidatesContent');
+
+  if (candidatesData.length === 0) {
+    content.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <h3>No candidates yet</h3>
+        <p>Add your first candidate to start the interview assessment process.</p>
+        <button class="btn btn-candidate" onclick="openAddCandidateModal()">➕ Add Candidate</button>
+      </div>
+    `;
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="candidates-grid">
+      ${candidatesData.map((candidate, idx) => {
+        const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
+        const softAvg = calculateAvg(candidate, SOFT_SKILLS);
+        const overallAvg = calculateAvg(candidate, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+        const status = getCandidateStatus(candidate);
+        const tierClass = getCardTierClass(candidate);
+
+        return `
+          <div class="character-card ${tierClass}" onclick="openCandidateModal(${idx})">
+            <div class="card-header candidate-header">
+              <div class="avatar">${getInitials(candidate.name)}</div>
+              <div class="character-info">
+                <div class="character-name">${candidate.name}</div>
+                <span class="character-role">${candidate.role}</span>
+                <div class="candidate-meta">
+                  <span class="candidate-status ${status}">${getCandidateStatusLabel(status)}</span>
+                  ${candidate.source ? `<span class="candidate-meta-item">via ${candidate.source}</span>` : ''}
+                </div>
+              </div>
+              ${overallAvg ? `<div class="level-badge">LVL ${Math.floor(parseFloat(overallAvg))}</div>` : ''}
+            </div>
+            <div class="xp-section">
+              <div class="xp-group">
+                <div class="xp-group-header">
+                  <span class="xp-group-title">Technical Skills</span>
+                  <span class="xp-group-score">${techAvg || '—'}</span>
+                </div>
+                <div class="xp-bar-container">
+                  <div class="xp-bar-fill" style="width: ${getXPPercentage(techAvg)}%"></div>
+                </div>
+              </div>
+              <div class="xp-group">
+                <div class="xp-group-header">
+                  <span class="xp-group-title">Soft Skills</span>
+                  <span class="xp-group-score">${softAvg || '—'}</span>
+                </div>
+                <div class="xp-bar-container">
+                  <div class="xp-bar-fill" style="width: ${getXPPercentage(softAvg)}%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="overall-score">
+                <span class="overall-label">Overall</span>
+                <span class="overall-value">${overallAvg || '—'}</span>
+              </div>
+              <button class="view-profile-btn" style="background: var(--candidate)" onclick="event.stopPropagation(); openCandidateModal(${idx})">
+                ${status === 'new' ? 'Start Interview →' : 'Continue →'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
 function openProfile(idx) {
@@ -1578,15 +2149,14 @@ function openProfile(idx) {
         <span class="skills-title">⚡ Technical Skills</span>
         <span class="skills-avg">${techAvg || '—'} / 5.0</span>
       </div>
-      ${TECHNICAL_SKILLS.map(skill => renderSkillRow(person, skill, true)).join('')}
+      ${TECHNICAL_SKILLS.map(skill => renderSkillRow(person, skill, true, false)).join('')}
     </div>
-
     <div class="skills-section">
       <div class="skills-header">
         <span class="skills-title">🎯 Soft Skills</span>
         <span class="skills-avg">${softAvg || '—'} / 5.0</span>
       </div>
-      ${SOFT_SKILLS.map(skill => renderSkillRow(person, skill, false)).join('')}
+      ${SOFT_SKILLS.map(skill => renderSkillRow(person, skill, false, false)).join('')}
     </div>
   `;
 
@@ -1594,13 +2164,15 @@ function openProfile(idx) {
   document.body.style.overflow = 'hidden';
 }
 
-function renderSkillRow(person, skill, isTechnical) {
+function renderSkillRow(person, skill, isTechnical, isCandidate = false) {
   const score = person.scores[skill.key] || null;
   const rubrics = isTechnical ? TECHNICAL_RUBRICS[skill.key] : SOFT_RUBRICS[skill.key];
+  const onclickFn = isCandidate ? `toggleCandidateSkillRubric('${skill.key}')` : `toggleSkillRubric('${skill.key}')`;
+  const scoreFn = isCandidate ? 'setCandidateScore' : 'setScore';
 
   return `
-    <div class="skill-row" id="skill-${skill.key}">
-      <div class="skill-main" onclick="toggleSkillRubric('${skill.key}')">
+    <div class="skill-row" id="${isCandidate ? 'candidate-' : ''}skill-${skill.key}">
+      <div class="skill-main" onclick="${onclickFn}">
         <div class="skill-info">
           <div class="skill-name">${skill.label}</div>
           <div class="skill-current-desc">${getCurrentLevelDesc(skill.key, score, isTechnical)}</div>
@@ -1608,7 +2180,7 @@ function renderSkillRow(person, skill, isTechnical) {
         <div class="skill-score-input">
           ${[1,2,3,4,5].map(n => `
             <button class="score-btn ${score === n ? 'active' : ''}"
-                    onclick="event.stopPropagation(); setScore('${skill.key}', ${n}, ${isTechnical})">
+                    onclick="event.stopPropagation(); ${scoreFn}('${skill.key}', ${n}, ${isTechnical})">
               ${n}
             </button>
           `).join('')}
@@ -1617,12 +2189,7 @@ function renderSkillRow(person, skill, isTechnical) {
       </div>
       <div class="skill-rubric">
         <table class="rubric-table">
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>Criteria</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Level</th><th>Criteria</th></tr></thead>
           <tbody>
             ${rubrics.map(r => `
               <tr class="${score === r.score ? 'current-level' : ''}">
@@ -1638,46 +2205,43 @@ function renderSkillRow(person, skill, isTechnical) {
 }
 
 function toggleSkillRubric(skillKey) {
-  const row = document.getElementById(`skill-${skillKey}`);
-  row.classList.toggle('expanded');
+  document.getElementById(`skill-${skillKey}`).classList.toggle('expanded');
+}
+
+function toggleCandidateSkillRubric(skillKey) {
+  document.getElementById(`candidate-skill-${skillKey}`).classList.toggle('expanded');
 }
 
 function setScore(skillKey, score, isTechnical) {
   if (currentPersonIdx === null) return;
-
   const person = teamData[currentPersonIdx];
-  const oldTechAvg = calculateAvg(person, TECHNICAL_SKILLS);
-  const oldSoftAvg = calculateAvg(person, SOFT_SKILLS);
-  const oldTechBadge = getBadgeTier(oldTechAvg);
-  const oldSoftBadge = getBadgeTier(oldSoftAvg);
+  const oldTechBadge = getBadgeTier(calculateAvg(person, TECHNICAL_SKILLS));
+  const oldSoftBadge = getBadgeTier(calculateAvg(person, SOFT_SKILLS));
 
-  // Toggle score off if clicking same value
-  if (person.scores[skillKey] === score) {
-    person.scores[skillKey] = null;
-  } else {
-    person.scores[skillKey] = score;
-  }
+  person.scores[skillKey] = person.scores[skillKey] === score ? null : score;
 
-  // Check for new badges
-  const newTechAvg = calculateAvg(person, TECHNICAL_SKILLS);
-  const newSoftAvg = calculateAvg(person, SOFT_SKILLS);
-  const newTechBadge = getBadgeTier(newTechAvg);
-  const newSoftBadge = getBadgeTier(newSoftAvg);
+  const newTechBadge = getBadgeTier(calculateAvg(person, TECHNICAL_SKILLS));
+  const newSoftBadge = getBadgeTier(calculateAvg(person, SOFT_SKILLS));
 
-  // Show achievement if badge upgraded
-  if (isTechnical && newTechBadge && newTechBadge !== oldTechBadge &&
-      getTierRank(newTechBadge) > getTierRank(oldTechBadge)) {
+  if (isTechnical && newTechBadge && newTechBadge !== oldTechBadge && getTierRank(newTechBadge) > getTierRank(oldTechBadge)) {
     showAchievement(newTechBadge, 'Technical');
-  } else if (!isTechnical && newSoftBadge && newSoftBadge !== oldSoftBadge &&
-             getTierRank(newSoftBadge) > getTierRank(oldSoftBadge)) {
+  } else if (!isTechnical && newSoftBadge && newSoftBadge !== oldSoftBadge && getTierRank(newSoftBadge) > getTierRank(oldSoftBadge)) {
     showAchievement(newSoftBadge, 'Soft Skills');
   }
 
-  // Refresh modal content
   openProfile(currentPersonIdx);
   renderRoleGrids();
   renderTeamGrid();
   renderLeaderboard();
+}
+
+function setCandidateScore(skillKey, score, isTechnical) {
+  if (currentCandidateIdx === null) return;
+  const candidate = candidatesData[currentCandidateIdx];
+  candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
+  saveCandidates();
+  openCandidateModal(currentCandidateIdx);
+  renderCandidates();
 }
 
 function getTierRank(tier) {
@@ -1690,7 +2254,6 @@ function showAchievement(tier, category) {
   document.getElementById('achievementIcon').textContent = getBadgeIcon(tier);
   document.getElementById('achievementTitle').textContent = `${getBadgeLabel(tier)} Badge Earned!`;
   document.getElementById('achievementDesc').textContent = `${teamData[currentPersonIdx].name} reached ${getBadgeLabel(tier)} tier in ${category}!`;
-
   popup.classList.add('show');
   setTimeout(() => popup.classList.remove('show'), 2500);
 }
@@ -1701,24 +2264,275 @@ function closeModal() {
   currentPersonIdx = null;
 }
 
+// Candidate functions
+function openAddCandidateModal() {
+  document.getElementById('addCandidateModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddCandidateModal() {
+  document.getElementById('addCandidateModal').classList.remove('active');
+  document.body.style.overflow = '';
+  document.getElementById('addCandidateForm').reset();
+}
+
+function addCandidate(e) {
+  e.preventDefault();
+  const firstName = document.getElementById('candidateFirstName').value.trim();
+  const lastName = document.getElementById('candidateLastName').value.trim();
+  const email = document.getElementById('candidateEmail').value.trim();
+  const role = document.getElementById('candidateRole').value;
+  const source = document.getElementById('candidateSource').value.trim();
+
+  const candidate = {
+    name: `${firstName} ${lastName}`,
+    email,
+    role,
+    source,
+    scores: {},
+    notes: {},
+    createdAt: new Date().toISOString()
+  };
+
+  candidatesData.push(candidate);
+  saveCandidates();
+  closeAddCandidateModal();
+  renderCandidates();
+  openCandidateModal(candidatesData.length - 1);
+}
+
+function openCandidateModal(idx) {
+  currentCandidateIdx = idx;
+  currentInterviewSection = 'all';
+  const candidate = candidatesData[idx];
+  const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
+  const softAvg = calculateAvg(candidate, SOFT_SKILLS);
+  const overallAvg = calculateAvg(candidate, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const status = getCandidateStatus(candidate);
+
+  document.getElementById('candidateModalHeader').innerHTML = `
+    <div class="modal-avatar">${getInitials(candidate.name)}</div>
+    <div class="modal-character-info">
+      <h2>${candidate.name}</h2>
+      <span class="character-role">${candidate.role}</span>
+      <div class="candidate-meta" style="margin-top: 0.5rem;">
+        <span class="candidate-status ${status}">${getCandidateStatusLabel(status)}</span>
+        ${candidate.email ? `<span class="candidate-meta-item">${candidate.email}</span>` : ''}
+        ${candidate.source ? `<span class="candidate-meta-item">via ${candidate.source}</span>` : ''}
+      </div>
+      <div class="modal-badges">
+        ${getBadgeTier(techAvg) ? `<span class="badge ${getBadgeTier(techAvg)} earned">${getBadgeIcon(getBadgeTier(techAvg))} Technical</span>` : ''}
+        ${getBadgeTier(softAvg) ? `<span class="badge ${getBadgeTier(softAvg)} earned">${getBadgeIcon(getBadgeTier(softAvg))} Soft Skills</span>` : ''}
+      </div>
+    </div>
+  `;
+
+  renderCandidateModalBody(candidate);
+  document.getElementById('candidateModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderCandidateModalBody(candidate) {
+  const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
+  const softAvg = calculateAvg(candidate, SOFT_SKILLS);
+  const totalSkills = TECHNICAL_SKILLS.length + SOFT_SKILLS.length;
+  const scoredSkills = Object.values(candidate.scores || {}).filter(v => v && v > 0).length;
+
+  // Filter skills based on section
+  let techSkillsToShow = TECHNICAL_SKILLS;
+  let softSkillsToShow = SOFT_SKILLS;
+
+  if (currentInterviewSection === 'pipeline') {
+    techSkillsToShow = TECHNICAL_SKILLS.filter(s => s.category === 'Pipeline Ops');
+    softSkillsToShow = [];
+  } else if (currentInterviewSection === 'revenue') {
+    techSkillsToShow = TECHNICAL_SKILLS.filter(s => s.category === 'Revenue Ops');
+    softSkillsToShow = [];
+  } else if (currentInterviewSection === 'soft') {
+    techSkillsToShow = [];
+  }
+
+  document.getElementById('candidateModalBody').innerHTML = `
+    <div class="interview-progress">
+      <div class="interview-progress-header">
+        <span class="interview-progress-title">Assessment Progress</span>
+        <span class="interview-progress-count">${scoredSkills} / ${totalSkills} skills assessed</span>
+      </div>
+      <div class="interview-progress-bar">
+        <div class="interview-progress-fill" style="width: ${(scoredSkills/totalSkills)*100}%"></div>
+      </div>
+    </div>
+
+    <div class="interview-section-tabs">
+      <button class="interview-section-tab ${currentInterviewSection === 'all' ? 'active' : ''}" onclick="setInterviewSection('all')">
+        All Skills <span class="tab-count">${totalSkills}</span>
+      </button>
+      <button class="interview-section-tab ${currentInterviewSection === 'pipeline' ? 'active' : ''}" onclick="setInterviewSection('pipeline')">
+        Pipeline Ops <span class="tab-count">6</span>
+      </button>
+      <button class="interview-section-tab ${currentInterviewSection === 'revenue' ? 'active' : ''}" onclick="setInterviewSection('revenue')">
+        Revenue Ops <span class="tab-count">6</span>
+      </button>
+      <button class="interview-section-tab ${currentInterviewSection === 'soft' ? 'active' : ''}" onclick="setInterviewSection('soft')">
+        Soft Skills <span class="tab-count">5</span>
+      </button>
+    </div>
+
+    ${techSkillsToShow.length > 0 ? `
+      <div class="skills-section">
+        <div class="skills-header">
+          <span class="skills-title">⚡ Technical Skills</span>
+          <span class="skills-avg">${techAvg || '—'} / 5.0</span>
+        </div>
+        ${techSkillsToShow.map(skill => renderInterviewQuestion(candidate, skill, true)).join('')}
+      </div>
+    ` : ''}
+
+    ${softSkillsToShow.length > 0 ? `
+      <div class="skills-section">
+        <div class="skills-header">
+          <span class="skills-title">🎯 Soft Skills</span>
+          <span class="skills-avg">${softAvg || '—'} / 5.0</span>
+        </div>
+        ${softSkillsToShow.map(skill => renderInterviewQuestion(candidate, skill, false)).join('')}
+      </div>
+    ` : ''}
+
+    <div class="interview-nav">
+      <button class="btn btn-danger btn-sm" onclick="deleteCandidate(${currentCandidateIdx})">🗑️ Delete Candidate</button>
+      <button class="btn btn-primary" onclick="hireCandidate(${currentCandidateIdx})">✅ Move to Team</button>
+    </div>
+  `;
+}
+
+function renderInterviewQuestion(candidate, skill, isTechnical) {
+  const score = candidate.scores[skill.key] || null;
+  const notes = candidate.notes[skill.key] || '';
+  const question = INTERVIEW_QUESTIONS[skill.key];
+  const rubrics = isTechnical ? TECHNICAL_RUBRICS[skill.key] : SOFT_RUBRICS[skill.key];
+
+  return `
+    <div class="interview-question-card">
+      <div class="interview-question-header">
+        <div>
+          <div class="interview-skill-label">${skill.label}</div>
+          <div class="interview-question">"${question.primary}"</div>
+        </div>
+      </div>
+      <div class="interview-followup">
+        <strong>Follow-up:</strong> ${question.followup}<br>
+        <strong style="color: var(--candidate);">${question.lookFor}</strong>
+      </div>
+      <div class="interview-scoring">
+        ${[1,2,3,4,5].map(n => `
+          <button class="interview-score-btn ${score === n ? 'selected' : ''}"
+                  onclick="setCandidateScoreFromInterview('${skill.key}', ${n}, ${isTechnical})">
+            <span class="score-num">${n}</span>
+            <span class="score-label">${rubrics[n-1].desc.split(';')[0].substring(0, 20)}...</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="interview-notes">
+        <textarea placeholder="Notes from interview..."
+                  onchange="setCandidateNotes('${skill.key}', this.value)">${notes}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function setInterviewSection(section) {
+  currentInterviewSection = section;
+  renderCandidateModalBody(candidatesData[currentCandidateIdx]);
+}
+
+function setCandidateScoreFromInterview(skillKey, score, isTechnical) {
+  if (currentCandidateIdx === null) return;
+  const candidate = candidatesData[currentCandidateIdx];
+  candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
+  saveCandidates();
+  renderCandidateModalBody(candidate);
+  renderCandidates();
+}
+
+function setCandidateNotes(skillKey, notes) {
+  if (currentCandidateIdx === null) return;
+  candidatesData[currentCandidateIdx].notes[skillKey] = notes;
+  saveCandidates();
+}
+
+function deleteCandidate(idx) {
+  if (confirm(`Are you sure you want to delete ${candidatesData[idx].name}? This cannot be undone.`)) {
+    candidatesData.splice(idx, 1);
+    saveCandidates();
+    closeCandidateModal();
+    renderCandidates();
+  }
+}
+
+function hireCandidate(idx) {
+  const candidate = candidatesData[idx];
+  if (confirm(`Move ${candidate.name} to the team as ${candidate.role}?`)) {
+    teamData.push({
+      name: candidate.name,
+      role: candidate.role,
+      scores: { ...candidate.scores }
+    });
+    candidatesData.splice(idx, 1);
+    saveCandidates();
+    saveData();
+    closeCandidateModal();
+    renderCandidates();
+    renderTeamGrid();
+    renderRoleGrids();
+    renderLeaderboard();
+    showToast(`${candidate.name} added to the team!`);
+  }
+}
+
+function closeCandidateModal() {
+  document.getElementById('candidateModal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentCandidateIdx = null;
+}
+
+function saveCandidates() {
+  localStorage.setItem('leanscale_candidates', JSON.stringify(candidatesData));
+}
+
 function saveData() {
   localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
+  saveCandidates();
+  showToast('Progress saved!');
+}
+
+function showToast(message) {
   const toast = document.getElementById('toast');
+  toast.textContent = '✨ ' + message;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-// Close modal on escape
+// Event listeners
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    closeAddCandidateModal();
+    closeCandidateModal();
+  }
 });
 
-// Close modal on overlay click
 document.getElementById('profileModal').addEventListener('click', (e) => {
   if (e.target.id === 'profileModal') closeModal();
 });
 
-// Tab navigation
+document.getElementById('addCandidateModal').addEventListener('click', (e) => {
+  if (e.target.id === 'addCandidateModal') closeAddCandidateModal();
+});
+
+document.getElementById('candidateModal').addEventListener('click', (e) => {
+  if (e.target.id === 'candidateModal') closeCandidateModal();
+});
+
 document.querySelectorAll('.nav-link').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
@@ -1770,32 +2584,17 @@ function renderCompactCard(person, idx) {
 }
 
 function renderRoleGrids() {
-  const architects = [];
-  const engineers = [];
-
+  const architects = [], engineers = [];
   teamData.forEach((person, idx) => {
-    if (person.role === 'Architect') {
-      architects.push({ person, idx });
-    } else {
-      engineers.push({ person, idx });
-    }
+    if (person.role === 'Architect') architects.push({ person, idx });
+    else engineers.push({ person, idx });
   });
 
-  // Render architect grid
-  document.getElementById('architectGrid').innerHTML = architects
-    .map(({ person, idx }) => renderCompactCard(person, idx))
-    .join('');
-
-  // Render engineer grid
-  document.getElementById('engineerGrid').innerHTML = engineers
-    .map(({ person, idx }) => renderCompactCard(person, idx))
-    .join('');
-
-  // Update counts
+  document.getElementById('architectGrid').innerHTML = architects.map(({ person, idx }) => renderCompactCard(person, idx)).join('');
+  document.getElementById('engineerGrid').innerHTML = engineers.map(({ person, idx }) => renderCompactCard(person, idx)).join('');
   document.getElementById('architectCount').textContent = `${architects.length} members`;
   document.getElementById('engineerCount').textContent = `${engineers.length} members`;
 
-  // Calculate role averages
   function getRoleAvgs(members) {
     const techAvgs = [], softAvgs = [], overallAvgs = [];
     members.forEach(({ person }) => {
@@ -1819,7 +2618,6 @@ function renderRoleGrids() {
   document.getElementById('architectTech').textContent = architectAvgs.tech;
   document.getElementById('architectSoft').textContent = architectAvgs.soft;
   document.getElementById('architectOverall').textContent = architectAvgs.overall;
-
   document.getElementById('engineerTech').textContent = engineerAvgs.tech;
   document.getElementById('engineerSoft').textContent = engineerAvgs.soft;
   document.getElementById('engineerOverall').textContent = engineerAvgs.overall;
@@ -1829,6 +2627,7 @@ function renderRoleGrids() {
 renderRoleGrids();
 renderTeamGrid();
 renderLeaderboard();
+renderCandidates();
 </script>
 </body>
 </html>
