@@ -2212,14 +2212,14 @@ function renderTeamGrid() {
           </div>
         </div>
         <div class="badges-section">
-          <div class="badge bronze ${techBadge === 'bronze' ? 'earned' : ''}"><span class="badge-icon">🥉</span> Tech</div>
-          <div class="badge silver ${techBadge === 'silver' ? 'earned' : ''}"><span class="badge-icon">🥈</span> Tech</div>
-          <div class="badge gold ${techBadge === 'gold' ? 'earned' : ''}"><span class="badge-icon">🥇</span> Tech</div>
-          <div class="badge platinum ${techBadge === 'platinum' ? 'earned' : ''}"><span class="badge-icon">💎</span> Tech</div>
-          <div class="badge bronze ${softBadge === 'bronze' ? 'earned' : ''}"><span class="badge-icon">🥉</span> Soft</div>
-          <div class="badge silver ${softBadge === 'silver' ? 'earned' : ''}"><span class="badge-icon">🥈</span> Soft</div>
-          <div class="badge gold ${softBadge === 'gold' ? 'earned' : ''}"><span class="badge-icon">🥇</span> Soft</div>
-          <div class="badge platinum ${softBadge === 'platinum' ? 'earned' : ''}"><span class="badge-icon">💎</span> Soft</div>
+          <div class="badge bronze ${getTierRank(techBadge) >= 1 ? 'earned' : ''}"><span class="badge-icon">🥉</span> Tech</div>
+          <div class="badge silver ${getTierRank(techBadge) >= 2 ? 'earned' : ''}"><span class="badge-icon">🥈</span> Tech</div>
+          <div class="badge gold ${getTierRank(techBadge) >= 3 ? 'earned' : ''}"><span class="badge-icon">🥇</span> Tech</div>
+          <div class="badge platinum ${getTierRank(techBadge) >= 4 ? 'earned' : ''}"><span class="badge-icon">💎</span> Tech</div>
+          <div class="badge bronze ${getTierRank(softBadge) >= 1 ? 'earned' : ''}"><span class="badge-icon">🥉</span> Soft</div>
+          <div class="badge silver ${getTierRank(softBadge) >= 2 ? 'earned' : ''}"><span class="badge-icon">🥈</span> Soft</div>
+          <div class="badge gold ${getTierRank(softBadge) >= 3 ? 'earned' : ''}"><span class="badge-icon">🥇</span> Soft</div>
+          <div class="badge platinum ${getTierRank(softBadge) >= 4 ? 'earned' : ''}"><span class="badge-icon">💎</span> Soft</div>
         </div>
         <div class="card-footer">
           <div class="overall-score">
