@@ -1155,6 +1155,313 @@
       gap: 1.5rem;
     }
 
+    /* ATS Dashboard Styles */
+    .ats-dashboard {
+      margin-bottom: 2rem;
+    }
+
+    .ats-stats {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .ats-stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .ats-stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .ats-stat-card.active {
+      border-color: var(--candidate);
+      background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, rgba(102, 16, 242, 0.05) 100%);
+    }
+
+    .ats-stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .ats-stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ats-stat-card.applied .ats-stat-value { color: #6366f1; }
+    .ats-stat-card.screening .ats-stat-value { color: #8b5cf6; }
+    .ats-stat-card.interview .ats-stat-value { color: #0d6efd; }
+    .ats-stat-card.offer .ats-stat-value { color: #f59e0b; }
+    .ats-stat-card.hired .ats-stat-value { color: #10b981; }
+    .ats-stat-card.rejected .ats-stat-value { color: #ef4444; }
+
+    .ats-filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .ats-search {
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .ats-search:focus {
+      outline: none;
+      border-color: var(--candidate);
+    }
+
+    .ats-filter-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .ats-filter-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card-bg);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .ats-filter-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .ats-filter-btn.active {
+      background: var(--candidate);
+      color: white;
+      border-color: var(--candidate);
+    }
+
+    .ats-view-toggle {
+      display: flex;
+      gap: 0.25rem;
+      background: #f5f5f5;
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+
+    .ats-view-btn {
+      padding: 0.5rem 0.75rem;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .ats-view-btn.active {
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    /* Kanban Board */
+    .ats-kanban {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      min-height: 400px;
+    }
+
+    .kanban-column {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 0.75rem;
+      min-height: 300px;
+    }
+
+    .kanban-column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.5rem 0.75rem;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .kanban-column-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kanban-column.applied .kanban-column-title { color: #6366f1; }
+    .kanban-column.screening .kanban-column-title { color: #8b5cf6; }
+    .kanban-column.interview .kanban-column-title { color: #0d6efd; }
+    .kanban-column.offer .kanban-column-title { color: #f59e0b; }
+    .kanban-column.hired .kanban-column-title { color: #10b981; }
+    .kanban-column.rejected .kanban-column-title { color: #ef4444; }
+
+    .kanban-column-count {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: white;
+      padding: 0.15rem 0.5rem;
+      border-radius: 10px;
+    }
+
+    .kanban-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .kanban-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: var(--shadow);
+    }
+
+    .kanban-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--candidate);
+    }
+
+    .kanban-card-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .kanban-card-role {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .kanban-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .kanban-card-score {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--accent);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .kanban-card-date {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+    }
+
+    .kanban-card-actions {
+      display: flex;
+      gap: 0.25rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .kanban-action-btn {
+      flex: 1;
+      padding: 0.3rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      font-size: 0.65rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .kanban-action-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .kanban-action-btn.prev:hover { border-color: #6366f1; color: #6366f1; }
+    .kanban-action-btn.next:hover { border-color: #10b981; color: #10b981; }
+
+    /* Stage badge for list view */
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .stage-badge.applied { background: #eef2ff; color: #6366f1; }
+    .stage-badge.screening { background: #f3e8ff; color: #8b5cf6; }
+    .stage-badge.interview { background: #e0f2fe; color: #0d6efd; }
+    .stage-badge.offer { background: #fef3c7; color: #f59e0b; }
+    .stage-badge.hired { background: #d1fae5; color: #10b981; }
+    .stage-badge.rejected { background: #fee2e2; color: #ef4444; }
+
+    /* Stage selector dropdown */
+    .stage-select {
+      padding: 0.3rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: inherit;
+      cursor: pointer;
+      background: white;
+    }
+
+    .stage-select:focus {
+      outline: none;
+      border-color: var(--candidate);
+    }
+
+    @media (max-width: 1200px) {
+      .ats-stats { grid-template-columns: repeat(3, 1fr); }
+      .ats-kanban { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .ats-stats { grid-template-columns: repeat(2, 1fr); }
+      .ats-kanban { grid-template-columns: 1fr; }
+      .ats-filters { flex-direction: column; align-items: stretch; }
+      .ats-search { max-width: 100%; }
+    }
+
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
@@ -1623,14 +1930,39 @@
 
     <div id="candidates" class="section">
       <div class="candidates-header">
-        <h2>👥 Candidate Pipeline</h2>
+        <h2>👥 Applicant Tracking System</h2>
         <div class="candidate-actions">
           <button class="btn btn-candidate" onclick="openAddCandidateModal()">
             ➕ Add Candidate
           </button>
         </div>
       </div>
-      <div id="candidatesContent"></div>
+
+      <!-- ATS Dashboard -->
+      <div class="ats-dashboard" id="atsDashboard">
+        <!-- Stats Row -->
+        <div class="ats-stats" id="atsStats"></div>
+
+        <!-- Filters Row -->
+        <div class="ats-filters">
+          <input type="text" class="ats-search" id="atsSearch" placeholder="Search candidates..." oninput="filterCandidates()">
+          <div class="ats-filter-group">
+            <button class="ats-filter-btn active" data-role="all" onclick="setRoleFilter('all')">All Roles</button>
+            <button class="ats-filter-btn" data-role="Engineer" onclick="setRoleFilter('Engineer')">Engineers</button>
+            <button class="ats-filter-btn" data-role="Architect" onclick="setRoleFilter('Architect')">Architects</button>
+          </div>
+          <div class="ats-view-toggle">
+            <button class="ats-view-btn active" data-view="kanban" onclick="setATSView('kanban')">📋 Kanban</button>
+            <button class="ats-view-btn" data-view="list" onclick="setATSView('list')">📝 List</button>
+          </div>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="ats-kanban" id="atsKanban"></div>
+
+        <!-- List View (hidden by default) -->
+        <div class="candidates-grid" id="candidatesContent" style="display: none;"></div>
+      </div>
     </div>
 
     <div id="leaderboard" class="section">
@@ -1758,6 +2090,10 @@ const ARCHITECT_SKILLS = [
   { key: 'proactivity', label: 'Proactivity' },
   { key: 'strategic_value', label: 'Strategic Value' }
 ];
+
+// Cached combined skill arrays for performance
+const ALL_CORE_SKILLS = [...TECHNICAL_SKILLS, ...SOFT_SKILLS];
+const ALL_ARCHITECT_SKILLS = [...TECHNICAL_SKILLS, ...SOFT_SKILLS, ...ARCHITECT_SKILLS];
 
 const TECHNICAL_RUBRICS = {
   'planning_pipeline': [
@@ -2060,6 +2396,20 @@ let currentCandidateIdx = null;
 let currentInterviewSection = 'all';
 let previousBadges = {};
 
+// ATS State
+const ATS_STAGES = [
+  { key: 'applied', label: 'Applied', icon: '📥' },
+  { key: 'screening', label: 'Screening', icon: '🔍' },
+  { key: 'interview', label: 'Interview', icon: '💬' },
+  { key: 'offer', label: 'Offer', icon: '📋' },
+  { key: 'hired', label: 'Hired', icon: '✅' },
+  { key: 'rejected', label: 'Rejected', icon: '❌' }
+];
+let currentATSView = 'kanban';
+let currentRoleFilter = 'all';
+let currentStageFilter = 'all';
+let searchQuery = '';
+
 // Load saved data
 const savedTeam = localStorage.getItem('leanscale_scorecard_v2');
 if (savedTeam) {
@@ -2073,9 +2423,10 @@ if (savedTeam) {
 const savedCandidates = localStorage.getItem('leanscale_candidates');
 if (savedCandidates) {
   candidatesData = JSON.parse(savedCandidates);
-  // Migrate: ensure all candidates have contextData
+  // Migrate: ensure all candidates have contextData and stage
   candidatesData.forEach(c => {
     if (!c.contextData) c.contextData = {};
+    if (!c.stage) c.stage = 'applied'; // Default to 'applied' stage
   });
 }
 
@@ -2118,7 +2469,7 @@ function getBadgeLabel(tier) {
 }
 
 function getCardTierClass(person) {
-  const overall = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const overall = calculateAvg(person, ALL_CORE_SKILLS);
   return getBadgeTier(overall) || '';
 }
 
@@ -2160,7 +2511,7 @@ function updateGlobalStats() {
   teamData.forEach(p => {
     const t = calculateAvg(p, TECHNICAL_SKILLS);
     const s = calculateAvg(p, SOFT_SKILLS);
-    const o = calculateAvg(p, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+    const o = calculateAvg(p, ALL_CORE_SKILLS);
     if (t) allTech.push(parseFloat(t));
     if (s) allSoft.push(parseFloat(s));
     if (o) allOverall.push(parseFloat(o));
@@ -2176,7 +2527,7 @@ function renderTeamGrid() {
   grid.innerHTML = teamData.map((person, idx) => {
     const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
     const softAvg = calculateAvg(person, SOFT_SKILLS);
-    const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+    const overallAvg = calculateAvg(person, ALL_CORE_SKILLS);
     const tierClass = getCardTierClass(person);
     const techBadge = getBadgeTier(techAvg);
     const softBadge = getBadgeTier(softAvg);
@@ -2239,7 +2590,7 @@ function renderLeaderboard() {
     ...p, idx,
     techAvg: calculateAvg(p, TECHNICAL_SKILLS),
     softAvg: calculateAvg(p, SOFT_SKILLS),
-    overallAvg: calculateAvg(p, [...TECHNICAL_SKILLS, ...SOFT_SKILLS])
+    overallAvg: calculateAvg(p, ALL_CORE_SKILLS)
   })).sort((a, b) => {
     if (!a.overallAvg && !b.overallAvg) return 0;
     if (!a.overallAvg) return 1;
@@ -2283,7 +2634,7 @@ function renderCandidates() {
       ${candidatesData.map((candidate, idx) => {
         const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
         const softAvg = calculateAvg(candidate, SOFT_SKILLS);
-        const overallAvg = calculateAvg(candidate, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+        const overallAvg = calculateAvg(candidate, ALL_CORE_SKILLS);
         const status = getCandidateStatus(candidate);
         const tierClass = getCardTierClass(candidate);
 
@@ -2337,15 +2688,174 @@ function renderCandidates() {
   `;
 }
 
+// ATS Dashboard Functions
+function renderATSDashboard() {
+  renderATSStats();
+  if (currentATSView === 'kanban') {
+    renderATSKanban();
+    document.getElementById('atsKanban').style.display = 'grid';
+    document.getElementById('candidatesContent').style.display = 'none';
+  } else {
+    renderCandidates();
+    document.getElementById('atsKanban').style.display = 'none';
+    document.getElementById('candidatesContent').style.display = 'grid';
+  }
+}
+
+function renderATSStats() {
+  const stats = document.getElementById('atsStats');
+  const stageCounts = {};
+  ATS_STAGES.forEach(stage => stageCounts[stage.key] = 0);
+
+  candidatesData.forEach(c => {
+    const stage = c.stage || 'applied';
+    if (stageCounts[stage] !== undefined) stageCounts[stage]++;
+  });
+
+  stats.innerHTML = ATS_STAGES.map(stage => `
+    <div class="ats-stat-card ${stage.key} ${currentStageFilter === stage.key ? 'active' : ''}"
+         onclick="setStageFilter('${stage.key}')">
+      <div class="ats-stat-value">${stageCounts[stage.key]}</div>
+      <div class="ats-stat-label">${stage.icon} ${stage.label}</div>
+    </div>
+  `).join('');
+}
+
+function renderATSKanban() {
+  const kanban = document.getElementById('atsKanban');
+  const filteredCandidates = getFilteredCandidates();
+
+  if (candidatesData.length === 0) {
+    kanban.innerHTML = `
+      <div style="grid-column: 1 / -1;">
+        <div class="empty-state">
+          <div class="empty-state-icon">👥</div>
+          <h3>No candidates yet</h3>
+          <p>Add your first candidate to start the interview assessment process.</p>
+          <button class="btn btn-candidate" onclick="openAddCandidateModal()">➕ Add Candidate</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  kanban.innerHTML = ATS_STAGES.map(stage => {
+    const stageCandidates = filteredCandidates.filter(c => (c.candidate.stage || 'applied') === stage.key);
+    const stageIdx = ATS_STAGES.findIndex(s => s.key === stage.key);
+    const prevStage = stageIdx > 0 ? ATS_STAGES[stageIdx - 1] : null;
+    const nextStage = stageIdx < ATS_STAGES.length - 1 ? ATS_STAGES[stageIdx + 1] : null;
+
+    return `
+      <div class="kanban-column ${stage.key}">
+        <div class="kanban-column-header">
+          <span class="kanban-column-title">${stage.icon} ${stage.label}</span>
+          <span class="kanban-column-count">${stageCandidates.length}</span>
+        </div>
+        <div class="kanban-cards">
+          ${stageCandidates.map(({ candidate, idx }) => {
+            const overallAvg = calculateAvg(candidate, ALL_CORE_SKILLS);
+            const interviewStatus = getCandidateStatus(candidate);
+            const daysSinceCreated = Math.floor((Date.now() - new Date(candidate.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+
+            return `
+              <div class="kanban-card" onclick="openCandidateModal(${idx})">
+                <div class="kanban-card-name">${candidate.name}</div>
+                <div class="kanban-card-role">${candidate.role}${candidate.source ? ` · ${candidate.source}` : ''}</div>
+                <div class="kanban-card-meta">
+                  ${overallAvg ? `<span class="kanban-card-score">${overallAvg}</span>` : `<span class="candidate-status ${interviewStatus}" style="font-size: 0.6rem;">${getCandidateStatusLabel(interviewStatus)}</span>`}
+                  <span class="kanban-card-date">${daysSinceCreated === 0 ? 'Today' : daysSinceCreated + 'd ago'}</span>
+                </div>
+                <div class="kanban-card-actions" onclick="event.stopPropagation();">
+                  ${prevStage ? `<button class="kanban-action-btn prev" onclick="moveCandidateStage(${idx}, '${prevStage.key}')" title="Move to ${prevStage.label}">← ${prevStage.label}</button>` : ''}
+                  ${nextStage ? `<button class="kanban-action-btn next" onclick="moveCandidateStage(${idx}, '${nextStage.key}')" title="Move to ${nextStage.label}">${nextStage.label} →</button>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('') || '<div style="text-align: center; padding: 1rem; color: var(--text-secondary); font-size: 0.8rem;">No candidates</div>'}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getFilteredCandidates() {
+  return candidatesData
+    .map((candidate, idx) => ({ candidate, idx }))
+    .filter(({ candidate }) => {
+      // Role filter
+      if (currentRoleFilter !== 'all' && candidate.role !== currentRoleFilter) return false;
+
+      // Stage filter
+      if (currentStageFilter !== 'all' && (candidate.stage || 'applied') !== currentStageFilter) return false;
+
+      // Search filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesName = candidate.name.toLowerCase().includes(query);
+        const matchesEmail = (candidate.email || '').toLowerCase().includes(query);
+        const matchesSource = (candidate.source || '').toLowerCase().includes(query);
+        if (!matchesName && !matchesEmail && !matchesSource) return false;
+      }
+
+      return true;
+    });
+}
+
+function setATSView(view) {
+  currentATSView = view;
+  document.querySelectorAll('.ats-view-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  renderATSDashboard();
+}
+
+function setRoleFilter(role) {
+  currentRoleFilter = role;
+  document.querySelectorAll('.ats-filter-btn[data-role]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.role === role);
+  });
+  renderATSDashboard();
+}
+
+function setStageFilter(stage) {
+  currentStageFilter = currentStageFilter === stage ? 'all' : stage;
+  renderATSDashboard();
+}
+
+// Debounce utility for search performance
+let searchDebounceTimer = null;
+function filterCandidates() {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    searchQuery = document.getElementById('atsSearch').value;
+    renderATSDashboard();
+  }, 150);
+}
+
+function moveCandidateStage(idx, newStage) {
+  candidatesData[idx].stage = newStage;
+  saveCandidates();
+  renderATSDashboard();
+}
+
+function setCandidateStage(idx, newStage) {
+  candidatesData[idx].stage = newStage;
+  saveCandidates();
+  renderATSDashboard();
+}
+
+function getStageLabel(stageKey) {
+  const stage = ATS_STAGES.find(s => s.key === stageKey);
+  return stage ? stage.label : stageKey;
+}
+
 function openProfile(idx) {
   currentPersonIdx = idx;
   const person = teamData[idx];
   const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
   const softAvg = calculateAvg(person, SOFT_SKILLS);
   const archAvg = person.role === 'Architect' ? calculateAvg(person, ARCHITECT_SKILLS) : null;
-  const allSkills = person.role === 'Architect'
-    ? [...TECHNICAL_SKILLS, ...SOFT_SKILLS, ...ARCHITECT_SKILLS]
-    : [...TECHNICAL_SKILLS, ...SOFT_SKILLS];
+  const allSkills = person.role === 'Architect' ? ALL_ARCHITECT_SKILLS : ALL_CORE_SKILLS;
   const overallAvg = calculateAvg(person, allSkills);
   const techBadge = getBadgeTier(techAvg);
   const softBadge = getBadgeTier(softAvg);
@@ -2508,7 +3018,7 @@ function setCandidateScore(skillKey, score, isTechnical) {
   candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
   saveCandidates();
   openCandidateModal(currentCandidateIdx);
-  renderCandidates();
+  renderATSDashboard();
 }
 
 function setContext(skillKey, value) {
@@ -2574,15 +3084,17 @@ function addCandidate(e) {
     email,
     role,
     source,
+    stage: 'applied',
     scores: {},
     notes: {},
+    contextData: {},
     createdAt: new Date().toISOString()
   };
 
   candidatesData.push(candidate);
   saveCandidates();
   closeAddCandidateModal();
-  renderCandidates();
+  renderATSDashboard();
   openCandidateModal(candidatesData.length - 1);
 }
 
@@ -2592,9 +3104,10 @@ function openCandidateModal(idx) {
   const candidate = candidatesData[idx];
   const techAvg = calculateAvg(candidate, TECHNICAL_SKILLS);
   const softAvg = calculateAvg(candidate, SOFT_SKILLS);
-  const overallAvg = calculateAvg(candidate, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const overallAvg = calculateAvg(candidate, ALL_CORE_SKILLS);
   const status = getCandidateStatus(candidate);
 
+  const currentStage = candidate.stage || 'applied';
   document.getElementById('candidateModalHeader').innerHTML = `
     <div class="modal-avatar">${getInitials(candidate.name)}</div>
     <div class="modal-character-info">
@@ -2604,6 +3117,16 @@ function openCandidateModal(idx) {
         <span class="candidate-status ${status}">${getCandidateStatusLabel(status)}</span>
         ${candidate.email ? `<span class="candidate-meta-item">${candidate.email}</span>` : ''}
         ${candidate.source ? `<span class="candidate-meta-item">via ${candidate.source}</span>` : ''}
+      </div>
+      <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 0.75rem; color: rgba(255,255,255,0.8);">Pipeline Stage:</span>
+        <select class="stage-select" onchange="setCandidateStage(${idx}, this.value); openCandidateModal(${idx});">
+          ${ATS_STAGES.map(stage => `
+            <option value="${stage.key}" ${currentStage === stage.key ? 'selected' : ''}>
+              ${stage.icon} ${stage.label}
+            </option>
+          `).join('')}
+        </select>
       </div>
       <div class="modal-badges">
         ${getBadgeTier(techAvg) ? `<span class="badge ${getBadgeTier(techAvg)} earned">${getBadgeIcon(getBadgeTier(techAvg))} Technical</span>` : ''}
@@ -2783,7 +3306,7 @@ function setCandidateScoreFromInterview(skillKey, score, isTechnical) {
   candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
   saveCandidates();
   renderCandidateModalBody(candidate);
-  renderCandidates();
+  renderATSDashboard();
 }
 
 function setCandidateNotes(skillKey, notes) {
@@ -2797,7 +3320,7 @@ function deleteCandidate(idx) {
     candidatesData.splice(idx, 1);
     saveCandidates();
     closeCandidateModal();
-    renderCandidates();
+    renderATSDashboard();
   }
 }
 
@@ -2813,7 +3336,7 @@ function hireCandidate(idx) {
     saveCandidates();
     saveData();
     closeCandidateModal();
-    renderCandidates();
+    renderATSDashboard();
     renderTeamGrid();
     renderRoleGrids();
     renderLeaderboard();
@@ -2877,7 +3400,7 @@ document.querySelectorAll('.nav-link').forEach(tab => {
 function renderCompactCard(person, idx) {
   const techAvg = calculateAvg(person, TECHNICAL_SKILLS);
   const softAvg = calculateAvg(person, SOFT_SKILLS);
-  const overallAvg = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+  const overallAvg = calculateAvg(person, ALL_CORE_SKILLS);
   const tierClass = getCardTierClass(person);
   const techBadge = getBadgeTier(techAvg);
   const softBadge = getBadgeTier(softAvg);
@@ -2932,7 +3455,7 @@ function renderRoleGrids() {
     members.forEach(({ person }) => {
       const t = calculateAvg(person, TECHNICAL_SKILLS);
       const s = calculateAvg(person, SOFT_SKILLS);
-      const o = calculateAvg(person, [...TECHNICAL_SKILLS, ...SOFT_SKILLS]);
+      const o = calculateAvg(person, ALL_CORE_SKILLS);
       if (t) techAvgs.push(parseFloat(t));
       if (s) softAvgs.push(parseFloat(s));
       if (o) overallAvgs.push(parseFloat(o));
@@ -2959,7 +3482,7 @@ function renderRoleGrids() {
 renderRoleGrids();
 renderTeamGrid();
 renderLeaderboard();
-renderCandidates();
+renderATSDashboard();
 </script>
 </body>
 </html>
