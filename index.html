@@ -2414,7 +2414,7 @@ let searchQuery = '';
 // Supabase configuration
 const SUPABASE_URL = 'https://crhruwpxhtejfgxtujoj.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_uBY91PFsLr_uGKJxJ8jLgw_y9wE9h-H';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Supabase data functions
 async function loadFromSupabase() {
@@ -3479,7 +3479,7 @@ async function deleteCandidate(idx) {
   if (confirm(`Are you sure you want to delete ${candidatesData[idx].name}? This cannot be undone.`)) {
     const candidate = candidatesData[idx];
     if (candidate.id) {
-      await supabase.from('candidates').delete().eq('id', candidate.id);
+      await db.from('candidates').delete().eq('id', candidate.id);
     }
     candidatesData.splice(idx, 1);
     closeCandidateModal();
@@ -3514,7 +3514,7 @@ async function hireCandidate(idx) {
     
     // Remove from candidates in Supabase
     if (candidate.id) {
-      await supabase.from('candidates').delete().eq('id', candidate.id);
+      await db.from('candidates').delete().eq('id', candidate.id);
     }
     candidatesData.splice(idx, 1);
     
