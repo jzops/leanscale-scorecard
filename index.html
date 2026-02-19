@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeanScale Team Scorecard</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
       --primary: #301934;
@@ -2410,33 +2411,192 @@ let currentRoleFilter = 'all';
 let currentStageFilter = 'all';
 let searchQuery = '';
 
-// Load saved data
-const savedTeam = localStorage.getItem('leanscale_scorecard_v2');
-if (savedTeam) {
-  teamData = JSON.parse(savedTeam);
-  // Migrate: ensure all team members have contextData
-  teamData.forEach(p => {
-    if (!p.contextData) p.contextData = {};
-  });
+// Supabase configuration
+const SUPABASE_URL = 'https://crhruwpxhtejfgxtujoj.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_uBY91PFsLr_uGKJxJ8jLgw_y9wE9h-H';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Supabase data functions
+async function loadFromSupabase() {
+  try {
+    // Load employees
+    const { data: employees, error: empError } = await supabase
+      .from('employees')
+      .select('*')
+      .order('name');
+    
+    if (empError) throw empError;
+    
+    if (employees && employees.length > 0) {
+      teamData = employees.map(e => ({
+        id: e.id,
+        name: e.name,
+        role: e.role,
+        scores: e.scores || {},
+        contextData: e.context_data || {}
+      }));
+    } else {
+      // Seed initial team data to Supabase
+      await seedInitialTeamData();
+    }
+
+    // Load candidates
+    const { data: candidates, error: candError } = await supabase
+      .from('candidates')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (candError) throw candError;
+    
+    if (candidates && candidates.length > 0) {
+      candidatesData = candidates.map(c => ({
+        id: c.id,
+        name: c.name,
+        email: c.email,
+        role: c.role,
+        source: c.source,
+        stage: c.stage || 'applied',
+        scores: c.scores || {},
+        notes: c.notes || {},
+        contextData: c.context_data || {},
+        createdAt: c.created_at
+      }));
+    }
+
+    console.log('Data loaded from Supabase');
+  } catch (err) {
+    console.error('Supabase load error, falling back to localStorage:', err);
+    loadFromLocalStorage();
+  }
 }
 
-const savedCandidates = localStorage.getItem('leanscale_candidates');
-if (savedCandidates) {
-  candidatesData = JSON.parse(savedCandidates);
-  // Migrate: ensure all candidates have contextData and stage
-  candidatesData.forEach(c => {
-    if (!c.contextData) c.contextData = {};
-    if (!c.stage) c.stage = 'applied'; // Default to 'applied' stage
-  });
+async function seedInitialTeamData() {
+  const initialTeam = [
+    { name: 'John', role: 'Architect' },
+    { name: 'Derek', role: 'Architect' },
+    { name: 'Christopher', role: 'Engineer' },
+    { name: 'Brian', role: 'Architect' },
+    { name: 'Kavean', role: 'Engineer' },
+    { name: 'Isabelle', role: 'Architect' },
+    { name: 'Eduardo', role: 'Engineer' },
+    { name: 'Raphael', role: 'Engineer' },
+    { name: 'Rodolfo', role: 'Engineer' },
+    { name: 'Amanda', role: 'Architect' },
+    { name: 'Solange', role: 'Engineer' },
+    { name: 'Diego', role: 'Engineer' },
+    { name: 'Ambrstack', role: 'Engineer' },
+    { name: 'Sarmad', role: 'Engineer' }
+  ];
+
+  const { data, error } = await supabase
+    .from('employees')
+    .insert(initialTeam.map(t => ({
+      name: t.name,
+      role: t.role,
+      scores: {},
+      context_data: {}
+    })))
+    .select();
+
+  if (error) throw error;
+  
+  teamData = data.map(e => ({
+    id: e.id,
+    name: e.name,
+    role: e.role,
+    scores: e.scores || {},
+    contextData: e.context_data || {}
+  }));
 }
 
-// Initialize previous badges state
-teamData.forEach((p, idx) => {
-  previousBadges[idx] = {
-    tech: getBadgeTier(calculateAvg(p, TECHNICAL_SKILLS)),
-    soft: getBadgeTier(calculateAvg(p, SOFT_SKILLS))
-  };
-});
+async function saveEmployeeToSupabase(person) {
+  try {
+    const { error } = await supabase
+      .from('employees')
+      .update({
+        scores: person.scores,
+        context_data: person.contextData,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', person.id);
+    
+    if (error) throw error;
+    console.log('Employee saved to Supabase');
+  } catch (err) {
+    console.error('Supabase save error:', err);
+  }
+}
+
+async function saveCandidateToSupabase(candidate) {
+  try {
+    if (candidate.id) {
+      const { error } = await supabase
+        .from('candidates')
+        .update({
+          name: candidate.name,
+          email: candidate.email,
+          role: candidate.role,
+          source: candidate.source,
+          stage: candidate.stage,
+          scores: candidate.scores,
+          notes: candidate.notes,
+          context_data: candidate.contextData,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', candidate.id);
+      if (error) throw error;
+    } else {
+      const { data, error } = await supabase
+        .from('candidates')
+        .insert({
+          name: candidate.name,
+          email: candidate.email,
+          role: candidate.role,
+          source: candidate.source,
+          stage: candidate.stage,
+          scores: candidate.scores || {},
+          notes: candidate.notes || {},
+          context_data: candidate.contextData || {}
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      candidate.id = data.id;
+    }
+    console.log('Candidate saved to Supabase');
+  } catch (err) {
+    console.error('Supabase candidate save error:', err);
+  }
+}
+
+function loadFromLocalStorage() {
+  const savedTeam = localStorage.getItem('leanscale_scorecard_v2');
+  if (savedTeam) {
+    teamData = JSON.parse(savedTeam);
+    teamData.forEach(p => {
+      if (!p.contextData) p.contextData = {};
+    });
+  }
+
+  const savedCandidates = localStorage.getItem('leanscale_candidates');
+  if (savedCandidates) {
+    candidatesData = JSON.parse(savedCandidates);
+    candidatesData.forEach(c => {
+      if (!c.contextData) c.contextData = {};
+      if (!c.stage) c.stage = 'applied';
+    });
+  }
+}
+
+// Initialize previous badges state (called after data load)
+function initializeBadges() {
+  teamData.forEach((p, idx) => {
+    previousBadges[idx] = {
+      tech: getBadgeTier(calculateAvg(p, TECHNICAL_SKILLS)),
+      soft: getBadgeTier(calculateAvg(p, SOFT_SKILLS))
+    };
+  });
+}
 
 function getInitials(name) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -2834,13 +2994,13 @@ function filterCandidates() {
 
 function moveCandidateStage(idx, newStage) {
   candidatesData[idx].stage = newStage;
-  saveCandidates();
+  saveCandidateToSupabase(candidatesData[idx]);
   renderATSDashboard();
 }
 
 function setCandidateStage(idx, newStage) {
   candidatesData[idx].stage = newStage;
-  saveCandidates();
+  saveCandidateToSupabase(candidatesData[idx]);
   renderATSDashboard();
 }
 
@@ -2992,7 +3152,7 @@ function setScore(skillKey, score, skillType) {
   const oldArchBadge = person.role === 'Architect' ? getBadgeTier(calculateAvg(person, ARCHITECT_SKILLS)) : null;
 
   person.scores[skillKey] = person.scores[skillKey] === score ? null : score;
-  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
+  saveEmployeeToSupabase(person);
 
   const newTechBadge = getBadgeTier(calculateAvg(person, TECHNICAL_SKILLS));
   const newSoftBadge = getBadgeTier(calculateAvg(person, SOFT_SKILLS));
@@ -3016,7 +3176,7 @@ function setCandidateScore(skillKey, score, isTechnical) {
   if (currentCandidateIdx === null) return;
   const candidate = candidatesData[currentCandidateIdx];
   candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
-  saveCandidates();
+  saveCandidateToSupabase(candidate);
   openCandidateModal(currentCandidateIdx);
   renderATSDashboard();
 }
@@ -3026,7 +3186,7 @@ function setContext(skillKey, value) {
   const person = teamData[currentPersonIdx];
   if (!person.contextData) person.contextData = {};
   person.contextData[skillKey] = parseInt(value) || 0;
-  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
+  saveEmployeeToSupabase(person);
   // Don't re-render the whole modal to preserve cursor position
 }
 
@@ -3035,7 +3195,7 @@ function setCandidateContext(skillKey, value) {
   const candidate = candidatesData[currentCandidateIdx];
   if (!candidate.contextData) candidate.contextData = {};
   candidate.contextData[skillKey] = parseInt(value) || 0;
-  saveCandidates();
+  saveCandidateToSupabase(candidate);
   // Don't re-render to preserve cursor position
 }
 
@@ -3071,7 +3231,7 @@ function closeAddCandidateModal() {
   document.getElementById('addCandidateForm').reset();
 }
 
-function addCandidate(e) {
+async function addCandidate(e) {
   e.preventDefault();
   const firstName = document.getElementById('candidateFirstName').value.trim();
   const lastName = document.getElementById('candidateLastName').value.trim();
@@ -3092,7 +3252,7 @@ function addCandidate(e) {
   };
 
   candidatesData.push(candidate);
-  saveCandidates();
+  await saveCandidateToSupabase(candidate);
   closeAddCandidateModal();
   renderATSDashboard();
   openCandidateModal(candidatesData.length - 1);
@@ -3304,7 +3464,7 @@ function setCandidateScoreFromInterview(skillKey, score, isTechnical) {
   if (currentCandidateIdx === null) return;
   const candidate = candidatesData[currentCandidateIdx];
   candidate.scores[skillKey] = candidate.scores[skillKey] === score ? null : score;
-  saveCandidates();
+  saveCandidateToSupabase(candidate);
   renderCandidateModalBody(candidate);
   renderATSDashboard();
 }
@@ -3312,29 +3472,52 @@ function setCandidateScoreFromInterview(skillKey, score, isTechnical) {
 function setCandidateNotes(skillKey, notes) {
   if (currentCandidateIdx === null) return;
   candidatesData[currentCandidateIdx].notes[skillKey] = notes;
-  saveCandidates();
+  saveCandidateToSupabase(candidatesData[currentCandidateIdx]);
 }
 
-function deleteCandidate(idx) {
+async function deleteCandidate(idx) {
   if (confirm(`Are you sure you want to delete ${candidatesData[idx].name}? This cannot be undone.`)) {
+    const candidate = candidatesData[idx];
+    if (candidate.id) {
+      await supabase.from('candidates').delete().eq('id', candidate.id);
+    }
     candidatesData.splice(idx, 1);
-    saveCandidates();
     closeCandidateModal();
     renderATSDashboard();
   }
 }
 
-function hireCandidate(idx) {
+async function hireCandidate(idx) {
   const candidate = candidatesData[idx];
   if (confirm(`Move ${candidate.name} to the team as ${candidate.role}?`)) {
-    teamData.push({
-      name: candidate.name,
-      role: candidate.role,
-      scores: { ...candidate.scores }
-    });
+    // Add to employees in Supabase
+    const { data: newEmployee, error } = await supabase
+      .from('employees')
+      .insert({
+        name: candidate.name,
+        role: candidate.role,
+        scores: candidate.scores || {},
+        context_data: candidate.contextData || {}
+      })
+      .select()
+      .single();
+    
+    if (!error && newEmployee) {
+      teamData.push({
+        id: newEmployee.id,
+        name: newEmployee.name,
+        role: newEmployee.role,
+        scores: newEmployee.scores || {},
+        contextData: newEmployee.context_data || {}
+      });
+    }
+    
+    // Remove from candidates in Supabase
+    if (candidate.id) {
+      await supabase.from('candidates').delete().eq('id', candidate.id);
+    }
     candidatesData.splice(idx, 1);
-    saveCandidates();
-    saveData();
+    
     closeCandidateModal();
     renderATSDashboard();
     renderTeamGrid();
@@ -3351,11 +3534,13 @@ function closeCandidateModal() {
 }
 
 function saveCandidates() {
-  localStorage.setItem('leanscale_candidates', JSON.stringify(candidatesData));
+  // Save all candidates to Supabase
+  candidatesData.forEach(c => saveCandidateToSupabase(c));
 }
 
 function saveData() {
-  localStorage.setItem('leanscale_scorecard_v2', JSON.stringify(teamData));
+  // Save all employees to Supabase
+  teamData.forEach(p => saveEmployeeToSupabase(p));
   saveCandidates();
   showToast('Progress saved!');
 }
@@ -3478,11 +3663,17 @@ function renderRoleGrids() {
   document.getElementById('engineerOverall').textContent = engineerAvgs.overall;
 }
 
-// Initial render
-renderRoleGrids();
-renderTeamGrid();
-renderLeaderboard();
-renderATSDashboard();
+// Initialize app
+async function initApp() {
+  await loadFromSupabase();
+  initializeBadges();
+  renderRoleGrids();
+  renderTeamGrid();
+  renderLeaderboard();
+  renderATSDashboard();
+}
+
+initApp();
 </script>
 </body>
 </html>
