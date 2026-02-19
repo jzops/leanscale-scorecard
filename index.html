@@ -2420,7 +2420,7 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 async function loadFromSupabase() {
   try {
     // Load employees
-    const { data: employees, error: empError } = await supabase
+    const { data: employees, error: empError } = await db
       .from('employees')
       .select('*')
       .order('name');
@@ -2441,7 +2441,7 @@ async function loadFromSupabase() {
     }
 
     // Load candidates
-    const { data: candidates, error: candError } = await supabase
+    const { data: candidates, error: candError } = await db
       .from('candidates')
       .select('*')
       .order('created_at', { ascending: false });
@@ -2488,7 +2488,7 @@ async function seedInitialTeamData() {
     { name: 'Sarmad', role: 'Engineer' }
   ];
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('employees')
     .insert(initialTeam.map(t => ({
       name: t.name,
@@ -2511,7 +2511,7 @@ async function seedInitialTeamData() {
 
 async function saveEmployeeToSupabase(person) {
   try {
-    const { error } = await supabase
+    const { error } = await db
       .from('employees')
       .update({
         scores: person.scores,
@@ -2530,7 +2530,7 @@ async function saveEmployeeToSupabase(person) {
 async function saveCandidateToSupabase(candidate) {
   try {
     if (candidate.id) {
-      const { error } = await supabase
+      const { error } = await db
         .from('candidates')
         .update({
           name: candidate.name,
@@ -2546,7 +2546,7 @@ async function saveCandidateToSupabase(candidate) {
         .eq('id', candidate.id);
       if (error) throw error;
     } else {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('candidates')
         .insert({
           name: candidate.name,
@@ -3491,7 +3491,7 @@ async function hireCandidate(idx) {
   const candidate = candidatesData[idx];
   if (confirm(`Move ${candidate.name} to the team as ${candidate.role}?`)) {
     // Add to employees in Supabase
-    const { data: newEmployee, error } = await supabase
+    const { data: newEmployee, error } = await db
       .from('employees')
       .insert({
         name: candidate.name,
